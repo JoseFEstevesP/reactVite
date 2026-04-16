@@ -1,0 +1,127 @@
+:root {
+	--link-primary: #3b82f6;
+	--link-primary-hover: #2563eb;
+	--link-secondary-bg: #f3f4f6;
+	--link-secondary-border: #d1d5db;
+	--link-secondary-hover: #e5e7eb;
+	--link-ghost-hover: #f3f4f6;
+	--link-text-primary: #111827;
+	--link-text-secondary: #374151;
+	--link-text-ghost: #374151;
+}
+
+html[data-theme='dark'] {
+	--link-secondary-bg: #374151;
+	--link-secondary-border: #4b5563;
+	--link-secondary-hover: #4b5563;
+	--link-ghost-hover: #374151;
+	--link-text-primary: #f9fafb;
+	--link-text-secondary: #f9fafb;
+	--link-text-ghost: #f9fafb;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--link-secondary-bg: #374151;
+		--link-secondary-border: #4b5563;
+		--link-secondary-hover: #4b5563;
+		--link-ghost-hover: #374151;
+		--link-text-primary: #f9fafb;
+		--link-text-secondary: #f9fafb;
+		--link-text-ghost: #f9fafb;
+	}
+
+	html[data-theme='light'] {
+		--link-primary: #3b82f6;
+		--link-primary-hover: #2563eb;
+		--link-secondary-bg: #f3f4f6;
+		--link-secondary-border: #d1d5db;
+		--link-secondary-hover: #e5e7eb;
+		--link-ghost-hover: #f3f4f6;
+		--link-text-primary: #111827;
+		--link-text-secondary: #374151;
+		--link-text-ghost: #374151;
+	}
+}
+
+@media (prefers-contrast: high) {
+	:root {
+		--link-primary: #0000ff;
+		--link-primary-hover: #0000cc;
+	}
+}
+
+.link {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.375em;
+	text-decoration: none;
+	font-weight: 500;
+	cursor: pointer;
+	transition:
+		background-color var(--transition-base),
+		color var(--transition-base);
+
+	&:focus-visible {
+		outline: 2px solid var(--color-focus);
+		outline-offset: 2px;
+	}
+
+	&--sm {
+		font-size: 0.875em;
+		padding: 0.25em 0.5em;
+		border-radius: 0.25em;
+	}
+
+	&--md {
+		font-size: 1em;
+		padding: 0.375em 0.75em;
+		border-radius: 0.375em;
+	}
+
+	&--lg {
+		font-size: 1.125em;
+		padding: 0.5em 1em;
+		border-radius: 0.5em;
+	}
+
+	&--primary {
+		color: var(--link-primary);
+
+		&:hover {
+			color: var(--link-primary-hover);
+		}
+	}
+
+	&--secondary {
+		background-color: var(--link-secondary-bg);
+		border: 1px solid var(--link-secondary-border);
+		color: var(--link-text-secondary);
+
+		&:hover {
+			background-color: var(--link-secondary-hover);
+		}
+	}
+
+	&--ghost {
+		background-color: transparent;
+		color: var(--link-text-ghost);
+
+		&:hover {
+			background-color: var(--link-ghost-hover);
+		}
+	}
+
+	&__text {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	&__icon {
+		--size: 1em;
+		width: var(--size);
+		height: var(--size);
+		flex-shrink: 0;
+	}
+}

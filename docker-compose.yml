@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: .
+      target: ${NODE_ENV:-development}
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    container_name: reactvite_${NODE_ENV:-development}
+    env_file:
+      - .env
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
+      - NODE_ENV=${NODE_ENV:-development}
+    ports:
+      - '${APP_PORT:-5173}:5173'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:5173/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

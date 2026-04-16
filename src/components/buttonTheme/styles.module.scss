@@ -1,0 +1,14 @@
+.themeButton {
+	font-size: 1.2em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	padding: 0;
+	transform: translateY(0);
+	transition: transform 0.2s ease;
+
+	&:active {
+		transform: translateY(2px);
+	}
+}
