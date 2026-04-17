@@ -41,4 +41,4 @@ USER node
 
 EXPOSE 5173
 
-CMD ["pnpm", "run", "dev", "--", "--host"]
+CMD ["pnpm", "dev", "--host", "--port", "5173"]
