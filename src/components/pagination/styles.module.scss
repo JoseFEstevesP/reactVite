@@ -1,45 +1,13 @@
 :root {
 	--pagination-bg: transparent;
 	--pagination-btn-bg: transparent;
-	--pagination-btn-hover: #f3f4f6;
-	--pagination-btn-active: #3b82f6;
+	--pagination-btn-hover: var(--color-bg-hover);
+	--pagination-btn-active: var(--color-accent);
 	--pagination-btn-active-text: #ffffff;
-	--pagination-btn-disabled: #e5e7eb;
-	--pagination-btn-disabled-text: #9ca3af;
-	--pagination-text: #111827;
-	--pagination-border: #e5e7eb;
-}
-
-html[data-theme='dark'] {
-	--pagination-btn-hover: #374151;
-	--pagination-btn-active: #2563eb;
-	--pagination-btn-disabled: #374151;
-	--pagination-btn-disabled-text: #6b7280;
-	--pagination-text: #f9fafb;
-	--pagination-border: #374151;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--pagination-btn-hover: #374151;
-		--pagination-btn-active: #2563eb;
-		--pagination-btn-disabled: #374151;
-		--pagination-btn-disabled-text: #6b7280;
-		--pagination-text: #f9fafb;
-		--pagination-border: #374151;
-	}
-
-	html[data-theme='light'] {
-		--pagination-bg: transparent;
-		--pagination-btn-bg: transparent;
-		--pagination-btn-hover: #f3f4f6;
-		--pagination-btn-active: #3b82f6;
-		--pagination-btn-active-text: #ffffff;
-		--pagination-btn-disabled: #e5e7eb;
-		--pagination-btn-disabled-text: #9ca3af;
-		--pagination-text: #111827;
-		--pagination-border: #e5e7eb;
-	}
+	--pagination-btn-disabled: var(--color-bg-hover);
+	--pagination-btn-disabled-text: var(--color-text-muted);
+	--pagination-text: var(--color-text-primary);
+	--pagination-border: var(--color-border);
 }
 
 @media (prefers-contrast: high) {

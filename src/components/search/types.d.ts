@@ -3,6 +3,7 @@ import type { ErrorInput } from '../input/types';
 export interface SearchProps {
 	value?: string;
 	onChange?: (value: string) => void;
+	onSubmit?: (value: string) => void;
 	placeholder?: string;
 	error?: ErrorInput;
 	className?: string;

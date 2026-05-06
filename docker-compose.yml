@@ -5,7 +5,7 @@ services:
       target: ${NODE_ENV:-development}
       args:
         - NODE_ENV=${NODE_ENV:-development}
-    container_name: reactvite_${NODE_ENV:-development}
+    container_name: adminProject_react_${NODE_ENV:-development}
     env_file:
       - .env
     environment:

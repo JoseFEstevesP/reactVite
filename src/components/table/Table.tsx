@@ -3,6 +3,7 @@ import { Icons } from '../icon/Icons';
 import Pagination from '../pagination/Pagination';
 import style from './styles.module.scss';
 import type { TableProps } from './types';
+import Loader from '../loader/Loader';
 
 const Table = <T extends object>({
 	columns,
@@ -93,11 +94,7 @@ const Table = <T extends object>({
 						)}
 					</tbody>
 				</table>
-				{loading && (
-					<div className={style.table__loading}>
-						<Icons iconName="spinner" className={style.table__spinner} />
-					</div>
-				)}
+				{loading && <Loader />}
 			</div>
 			{totalPages > 1 && (
 				<div className={style.table__pagination}>

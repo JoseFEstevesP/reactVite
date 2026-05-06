@@ -1,56 +1,18 @@
 :root {
-	--menu-bg: #ffffff;
-	--menu-border: #e5e7eb;
-	--menu-text: #111827;
-	--menu-text-muted: #6b7280;
-	--menu-item-hover: #f3f4f6;
-	--menu-item-active: #3b82f6;
+	--menu-bg: var(--color-bg-elevated);
+	--menu-border: var(--color-border);
+	--menu-text: var(--color-text-primary);
+	--menu-text-muted: var(--color-text-secondary);
+	--menu-item-hover: var(--color-bg-hover);
+	--menu-item-active: var(--color-accent);
 	--menu-item-active-bg: rgba(59, 130, 246, 0.1);
-	--menu-sub-bg: #f9fafb;
-	--menu-toggle-icon: #374151;
+	--menu-sub-bg: var(--color-bg-subtle);
+	--menu-toggle-icon: var(--color-text-secondary);
 
 	--menu-width-collapsed: 3.5em;
 	--menu-width-expanded: 15.625em;
 	--menu-height-collapsed: 3.5em;
 	--menu-height-expanded: auto;
-}
-
-html[data-theme='dark'] {
-	--menu-bg: #1f2937;
-	--menu-border: #374151;
-	--menu-text: #f9fafb;
-	--menu-text-muted: #9ca3af;
-	--menu-item-hover: #374151;
-	--menu-item-active: #60a5fa;
-	--menu-item-active-bg: rgba(96, 165, 250, 0.1);
-	--menu-sub-bg: #111827;
-	--menu-toggle-icon: #9ca3af;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--menu-bg: #1f2937;
-		--menu-border: #374151;
-		--menu-text: #f9fafb;
-		--menu-text-muted: #9ca3af;
-		--menu-item-hover: #374151;
-		--menu-item-active: #60a5fa;
-		--menu-item-active-bg: rgba(96, 165, 250, 0.1);
-		--menu-sub-bg: #111827;
-		--menu-toggle-icon: #9ca3af;
-	}
-
-	html[data-theme='light'] {
-		--menu-bg: #ffffff;
-		--menu-border: #e5e7eb;
-		--menu-text: #111827;
-		--menu-text-muted: #6b7280;
-		--menu-item-hover: #f3f4f6;
-		--menu-item-active: #3b82f6;
-		--menu-item-active-bg: rgba(59, 130, 246, 0.1);
-		--menu-sub-bg: #f9fafb;
-		--menu-toggle-icon: #374151;
-	}
 }
 
 @media (prefers-contrast: high) {
@@ -78,7 +40,7 @@ html[data-theme='dark'] {
 	&--vertical {
 		flex-direction: column;
 		width: var(--menu-width-collapsed);
-		min-height: 100%;
+		height: 100%;
 		padding: 0.5em;
 		gap: 1em;
 		border-right: 0.0625em solid var(--menu-border);
@@ -116,7 +78,7 @@ html[data-theme='dark'] {
 
 	&__header {
 		display: flex;
-		justify-content: center;
+		justify-content: flex-end;
 		align-items: center;
 		width: 100%;
 	}

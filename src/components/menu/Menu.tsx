@@ -93,7 +93,7 @@ const Menu = ({
 	onProfileClick,
 	className = '',
 }: MenuProps) => {
-	const [internalExpanded, setInternalExpanded] = useState(true);
+	const [internalExpanded, setInternalExpanded] = useState(false);
 	const expanded = controlledExpanded ?? internalExpanded;
 
 	const handleToggle = () => {

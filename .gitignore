@@ -25,4 +25,3 @@ dist-ssr
 .agents/
 skills-lock.json
 .env
-AGENTS.md

@@ -1,4 +1,4 @@
-import toast from 'react-hot-toast';
+import { toastError } from '@/hooks/useToast';
 
 interface HandleErrorParams {
 	error: Record<string, unknown>;
@@ -22,7 +22,7 @@ export const processErrorResponse = ({
 				typeof errorMessage === 'object' &&
 				'message' in errorMessage
 			) {
-				toast.error((errorMessage as { message: string }).message);
+				toastError((errorMessage as { message: string }).message);
 			}
 		});
 	} else {

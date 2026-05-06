@@ -1,15 +1,14 @@
+import type { ApiErrorResponse } from '@/globalTypes';
+
 export interface ApiResponse<TData> {
-  data: TData
-  message?: string
+	success: boolean;
+	data: TData;
+	message?: string;
 }
 
-export interface ApiError {
-  message: string
-  code?: string
-  status?: number
-}
+export type ApiError = ApiErrorResponse['error'];
 
 export interface RequestConfig {
-  params?: Record<string, string | number | boolean>
-  headers?: Record<string, string>
+	params?: Record<string, string | number | boolean>;
+	headers?: Record<string, string>;
 }

@@ -1,0 +1,17 @@
+.main {
+	width: 100%;
+	height: 100vh;
+	font-size: 1rem;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-template-areas: 'sidebar main';
+
+	&__sidebar {
+		grid-area: sidebar;
+	}
+
+	&__content {
+		grid-area: main;
+		padding: 1em;
+	}
+}

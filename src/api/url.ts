@@ -1,0 +1,77 @@
+const modules = {
+	auth: '/auth',
+	user: '/user',
+	company: '/company',
+	payment: '/payment',
+	paymentMethod: '/payment-method',
+	subscription: '/api/subscription',
+	system: '/system',
+	rol: '/rol',
+	audit: '/audit',
+	plan: '/api/plan',
+};
+
+export const routes = {
+	login: `${modules.auth}/login`,
+	logout: `${modules.auth}/logout`,
+	refreshToken: `${modules.auth}/refresh-token`,
+	check: `${modules.auth}/check-session`,
+	rol: {
+		base: modules.rol,
+		one: `${modules.rol}/one/:uid`,
+		per: `${modules.rol}/per`,
+		all: `${modules.rol}/all`,
+		delete: `${modules.rol}/delete/:uid`,
+	},
+	user: {
+		base: modules.user,
+		one: `${modules.user}/one/:uid`,
+		create: `${modules.user}/protect`,
+		delete: `${modules.user}/delete/:uid`,
+	},
+	audit: {
+		base: modules.audit,
+		delete: `${modules.audit}/delete/:uid`,
+	},
+	company: {
+		base: modules.company,
+		one: `${modules.company}/one/:uid`,
+		create: modules.company,
+		delete: `${modules.company}/delete/:uid`,
+	},
+	payment: {
+		base: modules.payment,
+		one: `${modules.payment}/one/:uid`,
+		create: modules.payment,
+		delete: `${modules.payment}/delete/:uid`,
+	},
+	paymentMethod: {
+		base: modules.paymentMethod,
+		one: `${modules.paymentMethod}/one/:uid`,
+		create: modules.paymentMethod,
+		delete: `${modules.paymentMethod}/delete/:uid`,
+	},
+	system: {
+		base: modules.system,
+		one: `${modules.system}/one/:uid`,
+		create: modules.system,
+		delete: `${modules.system}/delete/:uid`,
+	},
+	subscription: {
+		base: modules.subscription,
+		one: `${modules.subscription}/one/:uid`,
+		create: modules.subscription,
+		delete: `${modules.subscription}/delete/:uid`,
+	},
+	plan: {
+		base: modules.plan,
+		one: `${modules.plan}/one/:uid`,
+		create: modules.plan,
+		delete: `${modules.plan}/delete/:uid`,
+	},
+	userCharts: `${modules.user}/charts`,
+	companyCharts: `${modules.company}/charts`,
+	paymentCharts: `${modules.payment}/charts`,
+	subscriptionCharts: `${modules.subscription}/charts`,
+	systemCharts: `${modules.system}/charts`,
+};

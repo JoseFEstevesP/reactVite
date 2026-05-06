@@ -11,27 +11,28 @@ export type UseDeleteState<TData = unknown, TError = Error> =
 	| { status: 'success'; data: TData }
 	| { status: 'error'; error: TError };
 
-interface UseDeleteOptions {
+interface UseDeleteOptions<TData, TError> {
 	queryKey?: string[];
-	onSuccess?: (data: unknown) => void;
-	onError?: (error: Error) => void;
+	onSuccess?: (data: TData) => void;
+	onError?: (error: TError) => void;
 	retry?: number;
 }
 
-export function useDelete<TData = unknown>(
+export function useDelete<TData = unknown, TError = Error>(
 	url: string,
-	options: UseDeleteOptions = {},
-): UseDeleteState<TData> &
+	options: UseDeleteOptions<TData, TError> = {},
+): UseDeleteState<TData, TError> &
 	Pick<
-		UseMutationResult<TData, Error, void>,
+		UseMutationResult<TData, TError, string>,
 		'mutate' | 'mutateAsync' | 'isPending' | 'reset'
 	> {
 	const { queryKey, onSuccess, onError, retry } = options;
 	const queryClient = useQueryClient();
 
-	const mutation = useMutation<TData, Error, void>({
-		mutationFn: async () => {
-			const response = await http.delete(url);
+	const mutation = useMutation<TData, TError, string>({
+		mutationFn: async (uid: string) => {
+			const finalUrl = url.replace(':uid', uid);
+			const response = await http.delete(finalUrl);
 			return response.data as TData;
 		},
 		onSuccess: data => {
@@ -68,7 +69,7 @@ export function useDelete<TData = unknown>(
 	if (mutation.isError) {
 		return {
 			status: 'error',
-			error: mutation.error as Error,
+			error: mutation.error as TError,
 			mutate: mutation.mutate,
 			mutateAsync: mutation.mutateAsync,
 			isPending: mutation.isPending,

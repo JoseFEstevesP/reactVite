@@ -1,40 +1,11 @@
 :root {
-	--select-bg: #ffffff;
-	--select-border: #e5e7eb;
-	--select-focus: #3b82f6;
-	--select-invalid: #ef4444;
-	--select-text: #111827;
-	--select-placeholder: #9ca3af;
-	--select-disabled-bg: #f3f4f6;
-}
-
-html[data-theme='dark'] {
-	--select-bg: #1f2937;
-	--select-border: #374151;
-	--select-focus: #2563eb;
-	--select-text: #f9fafb;
-	--select-placeholder: #9ca3af;
-	--select-disabled-bg: #374151;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--select-bg: #1f2937;
-		--select-border: #374151;
-		--select-focus: #2563eb;
-		--select-text: #f9fafb;
-		--select-placeholder: #9ca3af;
-		--select-disabled-bg: #374151;
-	}
-
-	html[data-theme='light'] {
-		--select-bg: #ffffff;
-		--select-border: #e5e7eb;
-		--select-focus: #3b82f6;
-		--select-text: #111827;
-		--select-placeholder: #9ca3af;
-		--select-disabled-bg: #f3f4f6;
-	}
+	--select-bg: var(--color-bg-elevated);
+	--select-border: var(--color-border);
+	--select-focus: var(--color-focus);
+	--select-invalid: var(--color-danger);
+	--select-text: var(--color-text-primary);
+	--select-placeholder: var(--color-text-muted);
+	--select-disabled-bg: var(--color-bg-hover);
 }
 
 @media (prefers-contrast: high) {
@@ -58,7 +29,7 @@ html[data-theme='dark'] {
 	&__label {
 		font-weight: 600;
 		font-size: 0.875em;
-		color: var(--select-text);
+		margin: 0;
 	}
 
 	&__container {
@@ -66,7 +37,7 @@ html[data-theme='dark'] {
 		height: 2.5em;
 		display: flex;
 		align-items: center;
-		border: 1px solid var(--select-border);
+		border: 0.0625em solid var(--select-border);
 		border-radius: var(--border-radius);
 		gap: 0.5em;
 		position: relative;
@@ -113,16 +84,17 @@ html[data-theme='dark'] {
 		height: 100%;
 		padding: 0;
 		justify-content: space-between;
+		flex-direction: row-reverse;
 	}
 
 	&__value {
+		max-width: calc(16em - 2.5em);
 		flex: 1;
 		text-align: start;
 		font-weight: normal;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
-		color: var(--select-text);
 
 		&--placeholder {
 			color: var(--select-placeholder);
@@ -252,7 +224,7 @@ html[data-theme='dark'] {
 
 		&:hover,
 		&:focus {
-			background-color: var(--color-hover);
+			background-color: var(--color-bg-hover);
 
 			& > .select__optionIcon {
 				opacity: 1;
@@ -261,7 +233,7 @@ html[data-theme='dark'] {
 		}
 
 		&--selected {
-			background-color: var(--color-selected);
+			background-color: var(--color-bg-hover);
 		}
 	}
 

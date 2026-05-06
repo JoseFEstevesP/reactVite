@@ -11,25 +11,25 @@ export type UsePostState<TData, TError = Error> =
 	| { status: 'success'; data: TData }
 	| { status: 'error'; error: TError };
 
-interface UsePostOptions {
+interface UsePostOptions<TData, TError> {
 	queryKey?: string[];
-	onSuccess?: (data: unknown) => void;
-	onError?: (error: Error) => void;
+	onSuccess?: (data: TData) => void;
+	onError?: (error: TError) => void;
 	retry?: number;
 }
 
-export function usePost<TData, TPayload = unknown>(
+export function usePost<TData, TError, TPayload = unknown>(
 	url: string,
-	options: UsePostOptions = {},
-): UsePostState<TData> &
+	options: UsePostOptions<TData, TError> = {},
+): UsePostState<TData, TError> &
 	Pick<
-		UseMutationResult<TData, Error, TPayload>,
+		UseMutationResult<TData, TError, TPayload>,
 		'mutate' | 'mutateAsync' | 'isPending' | 'reset'
 	> {
 	const { queryKey, onSuccess, onError, retry } = options;
 	const queryClient = useQueryClient();
 
-	const mutation = useMutation<TData, Error, TPayload>({
+	const mutation = useMutation<TData, TError, TPayload>({
 		mutationFn: async payload => {
 			const response = await http.post<TData>(url, payload);
 			return response.data;
@@ -68,7 +68,7 @@ export function usePost<TData, TPayload = unknown>(
 	if (mutation.isError) {
 		return {
 			status: 'error',
-			error: mutation.error as Error,
+			error: mutation.error as TError,
 			mutate: mutation.mutate,
 			mutateAsync: mutation.mutateAsync,
 			isPending: mutation.isPending,

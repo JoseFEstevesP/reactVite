@@ -1,4 +1,4 @@
-import type { UseFormRegister } from 'react-hook-form';
+import type { FieldValues, UseFormRegister } from 'react-hook-form';
 import type { NameIcon } from '../icon/types';
 
 export type ErrorInput =
@@ -21,7 +21,9 @@ export type TypeInput =
 
 export type InputSize = 'sm' | 'md' | 'lg';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps<
+	T extends FieldValues = FieldValues,
+> extends React.InputHTMLAttributes<HTMLInputElement> {
 	name: string;
 	placeholder?: string;
 	error?: ErrorInput;
@@ -31,5 +33,5 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 	iconName?: NameIcon;
 	size?: InputSize;
 	fullWidth?: boolean;
-	register?: UseFormRegister<Record<string, unknown>>;
+	register?: UseFormRegister<T>;
 }

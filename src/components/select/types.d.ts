@@ -1,3 +1,4 @@
+import type { FieldValues } from 'react-hook-form';
 import type { NameIcon } from '../icon/types';
 import type { ErrorInput } from '../input/types';
 
@@ -6,8 +7,9 @@ export interface SelectOption {
 	label: string;
 }
 
-export interface SelectProps {
+export interface SelectProps<T extends FieldValues = FieldValues> {
 	name: string;
+	control?: Control<T>;
 	value?: string;
 	onChange?: (value: string) => void;
 	label?: string;
@@ -21,8 +23,9 @@ export interface SelectProps {
 	iconName?: NameIcon;
 }
 
-export interface SelectMultipleProps {
+export interface SelectMultipleProps<T extends FieldValues = FieldValues> {
 	name: string;
+	control?: Control<T>;
 	value?: string[];
 	onChange?: (value: string[]) => void;
 	label?: string;

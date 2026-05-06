@@ -1,65 +1,215 @@
 :root {
-	// Base colors (light mode)
-	--color-bg: #ffffff;
-	--color-bg-secondary: #f9fafb;
-	--color-text: #111827;
-	--color-text-secondary: #6b7280;
-	--color-border: #e5e7eb;
+	// Base colors from reset.scss (light mode)
+	--color-primary: #1a1a1a;
+	--color-secondary: #f5f5f5;
 
-	// Focus
-	--color-focus: #3b82f6;
+	// Semantic colors - Backgrounds (darker for better contrast)
+	--color-bg: #f0f0f0;
+	--color-bg-elevated: #ffffff;
+	--color-bg-subtle: #ebebeb;
+	--color-bg-hover: #e0e0e0;
+
+	// Semantic colors - Text
+	--color-text-primary: var(--color-primary);
+	--color-text-secondary: #4a4a4a;
+	--color-text-muted: #6b6b6b;
+
+	// Semantic colors - Borders (more visible)
+	--color-border: #c0c0c0;
+	--color-border-subtle: #d4d4d4;
+
+	// Semantic colors - Interactive
+	--color-focus: #2563eb;
+	--color-accent: #2563eb;
+	--color-accent-hover: #1d4ed8;
+
+// Semantic colors - Feedback
+	--color-danger: #dc2626;
+	--color-danger-hover: #b91c1c;
+	--color-success: #059669;
+	--color-success-hover: #047857;
+	--color-warning: #d97706;
+
+	// Button specific
+	--btn-primary-bg: var(--color-accent);
+	--btn-primary-hover: var(--color-accent-hover);
+	--btn-secondary-bg: var(--color-bg-subtle);
+	--btn-secondary-hover: var(--color-bg-hover);
+	--btn-secondary-border: var(--color-border);
+	--btn-ghost-hover: var(--color-bg-hover);
+
+	// Form specific
+	--input-bg: var(--color-bg-elevated);
+	--input-border: var(--color-border);
+	--input-focus: var(--color-focus);
+	--input-invalid: var(--color-danger);
+	--input-text: var(--color-text-primary);
+	--input-placeholder: var(--color-text-muted);
+	--input-disabled-bg: var(--color-bg-subtle);
 
 	// Border radius
-	--border-radius: 6px;
+	--border-radius: 0.3125em;
+	--border-radius-sm: 0.25em;
 
 	// Transitions
 	--transition-base: 0.2s ease;
 
 	// Font
 	--font-principal: system-ui, sans-serif;
+
+	// Borders
+	--border-base: 0.0625em solid var(--color-border);
 }
 
 html[data-theme='dark'] {
-	--color-bg: #111827;
-	--color-bg-secondary: #1f2937;
-	--color-text: #f9fafb;
-	--color-text-secondary: #9ca3af;
-	--color-border: #374151;
+	// Override base from reset.scss
+	--color-primary: #f5f5f5;
+	--color-secondary: #1a1a1a;
 
-	--color-focus: #2563eb;
+	// Semantic colors - Backgrounds
+	--color-bg: #121212;
+	--color-bg-elevated: #1e1e1e;
+	--color-bg-subtle: #252525;
+	--color-bg-hover: #2d2d2d;
+
+	// Semantic colors - Text
+	--color-text-primary: var(--color-primary);
+	--color-text-secondary: #a0a0a0;
+	--color-text-muted: #787878;
+
+	// Semantic colors - Borders
+	--color-border: #404040;
+	--color-border-subtle: #505050;
+
+	// Semantic colors - Interactive
+	--color-focus: #3b82f6;
+	--color-accent: #3b82f6;
+	--color-accent-hover: #60a5fa;
+
+	// Feedback
+	--color-danger: #ef4444;
+	--color-danger-hover: #f87171;
+	--color-success: #10b981;
+	--color-success-hover: #34d399;
+	--color-warning: #f59e0b;
+
+	// Button specific
+	--btn-secondary-bg: #2d2d2d;
+	--btn-secondary-hover: #3d3d3d;
+	--btn-secondary-border: #404040;
+	--btn-ghost-hover: #2d2d2d;
+
+	// Form specific
+	--input-bg: #1e1e1e;
+	--input-border: #404040;
+	--input-focus: #3b82f6;
+	--input-text: #f5f5f5;
+	--input-placeholder: #787878;
+	--input-disabled-bg: #252525;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--color-bg: #111827;
-		--color-bg-secondary: #1f2937;
-		--color-text: #f9fafb;
-		--color-text-secondary: #9ca3af;
-		--color-border: #374151;
+		// Override base from reset.scss
+		--color-primary: #f5f5f5;
+		--color-secondary: #1a1a1a;
 
-		--color-focus: #2563eb;
+		// Semantic colors - Backgrounds
+		--color-bg: #121212;
+		--color-bg-elevated: #1e1e1e;
+		--color-bg-subtle: #252525;
+		--color-bg-hover: #2d2d2d;
+
+		// Semantic colors - Text
+		--color-text-primary: var(--color-primary);
+		--color-text-secondary: #a0a0a0;
+		--color-text-muted: #787878;
+
+		// Semantic colors - Borders
+		--color-border: #404040;
+		--color-border-subtle: #505050;
+
+		// Semantic colors - Interactive
+		--color-focus: #3b82f6;
+		--color-accent: #3b82f6;
+		--color-accent-hover: #60a5fa;
+
+		// Button specific
+		--btn-secondary-bg: #2d2d2d;
+		--btn-secondary-hover: #3d3d3d;
+		--btn-secondary-border: #404040;
+		--btn-ghost-hover: #2d2d2d;
+
+		// Form specific
+		--input-bg: #1e1e1e;
+		--input-border: #404040;
+		--input-focus: #3b82f6;
+		--input-text: #f5f5f5;
+		--input-placeholder: #787878;
+		--input-disabled-bg: #252525;
 	}
 
 	html[data-theme='light'] {
-		--color-bg: #ffffff;
-		--color-bg-secondary: #f9fafb;
-		--color-text: #111827;
-		--color-text-secondary: #6b7280;
-		--color-border: #e5e7eb;
+		// Override base from reset.scss
+		--color-primary: #1a1a1a;
+		--color-secondary: #f5f5f5;
 
-		--color-focus: #3b82f6;
+		// Semantic colors - Backgrounds (darker for better contrast)
+		--color-bg: #f0f0f0;
+		--color-bg-elevated: #ffffff;
+		--color-bg-subtle: #ebebeb;
+		--color-bg-hover: #e0e0e0;
+
+		// Semantic colors - Text
+		--color-text-primary: var(--color-primary);
+		--color-text-secondary: #4a4a4a;
+		--color-text-muted: #6b6b6b;
+
+		// Semantic colors - Borders (more visible)
+		--color-border: #c0c0c0;
+		--color-border-subtle: #d4d4d4;
+
+		// Semantic colors - Interactive
+		--color-focus: #2563eb;
+		--color-accent: #2563eb;
+		--color-accent-hover: #1d4ed8;
+
+		// Button specific
+		--btn-secondary-bg: #ebebeb;
+		--btn-secondary-hover: #e0e0e0;
+		--btn-secondary-border: #c0c0c0;
+		--btn-ghost-hover: #e0e0e0;
+
+		// Form specific
+		--input-bg: #ffffff;
+		--input-border: #c0c0c0;
+		--input-focus: #2563eb;
+		--input-text: #1a1a1a;
+		--input-placeholder: #6b6b6b;
+		--input-disabled-bg: #ebebeb;
 	}
 }
 
 @media (prefers-contrast: high) {
 	:root {
-		--color-bg: #ffffff;
-		--color-bg-secondary: #ffffff;
-		--color-text: #000000;
-		--color-text-secondary: #000000;
-		--color-border: #000000;
+		// Override base from reset.scss
+		--color-primary: #000;
+		--color-secondary: #fff;
 
+		// Semantic colors
+		--color-bg: #ffffff;
+		--color-bg-elevated: #ffffff;
+		--color-bg-subtle: #ffffff;
+		--color-bg-hover: #dddddd;
+		--color-text-primary: #000000;
+		--color-text-secondary: #333333;
+		--color-text-muted: #333333;
+		--color-border: #000000;
+		--color-border-subtle: #000000;
 		--color-focus: #000000;
+		--color-accent: #0000ff;
+		--color-accent-hover: #0000cc;
+		--color-danger: #ff0000;
 	}
 }
 
@@ -76,4 +226,52 @@ html {
 #root {
 	width: 100%;
 	min-height: 100dvh;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+* {
+	scrollbar-width: 0.625em;
+	scrollbar-color: var(--color-secondary) var(--color-bg-subtle);
+}
+
+*::-webkit-scrollbar {
+	width: 0.625em;
+	height: 0.625em;
+}
+
+*::-webkit-scrollbar-track {
+	background-color: var(--color-bg-subtle);
+	border-radius: 0.3125em;
+	padding: 0.0625em;
+}
+
+*::-webkit-scrollbar-track:hover {
+	background-color: var(--color-bg-hover);
+}
+
+*::-webkit-scrollbar-track:active {
+	background-color: var(--color-border-subtle);
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: var(--color-accent);
+	border-radius: 1.25em;
+	min-height: 0.625em;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	background-color: var(--color-accent-hover);
+}
+
+*::-webkit-scrollbar-thumb:active {
+	background-color: var(--color-accent-hover);
+}
+
+*::-webkit-scrollbar-button {
+	display: none;
+	width: 0;
+	height: 0;
 }

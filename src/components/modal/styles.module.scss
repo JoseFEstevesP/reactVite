@@ -1,39 +1,10 @@
 :root {
 	--modal-overlay: rgba(0, 0, 0, 0.5);
-	--modal-bg: #ffffff;
-	--modal-border: #e5e7eb;
-	--modal-text: #111827;
-	--modal-title: #111827;
-	--modal-close-btn: #6b7280;
-}
-
-html[data-theme='dark'] {
-	--modal-overlay: rgba(0, 0, 0, 0.7);
-	--modal-bg: #1f2937;
-	--modal-border: #374151;
-	--modal-text: #f9fafb;
-	--modal-title: #f9fafb;
-	--modal-close-btn: #9ca3af;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--modal-overlay: rgba(0, 0, 0, 0.7);
-		--modal-bg: #1f2937;
-		--modal-border: #374151;
-		--modal-text: #f9fafb;
-		--modal-title: #f9fafb;
-		--modal-close-btn: #9ca3af;
-	}
-
-	html[data-theme='light'] {
-		--modal-overlay: rgba(0, 0, 0, 0.5);
-		--modal-bg: #ffffff;
-		--modal-border: #e5e7eb;
-		--modal-text: #111827;
-		--modal-title: #111827;
-		--modal-close-btn: #6b7280;
-	}
+	--modal-bg: var(--color-bg-elevated);
+	--modal-border: var(--color-border);
+	--modal-text: var(--color-text-primary);
+	--modal-title: var(--color-text-primary);
+	--modal-close-btn: var(--color-text-secondary);
 }
 
 @media (prefers-contrast: high) {
@@ -108,9 +79,13 @@ html[data-theme='dark'] {
 	&__header {
 		width: 100%;
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		align-items: center;
 		gap: 0.5em;
+
+		&:has(title) {
+			justify-content: space-between;
+		}
 	}
 
 	&__title {

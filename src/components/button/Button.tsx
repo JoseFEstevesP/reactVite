@@ -1,6 +1,7 @@
 import { Icons } from '../icon/Icons';
 import styles from './styles.module.scss';
 import type { BtnProps } from './types';
+import { ButtonSize } from './types';
 
 export const Button = ({
 	variant = 'primary',
@@ -36,7 +37,13 @@ export const Button = ({
 				<Icons
 					iconName="spinner"
 					className={`${styles.button__icon} ${styles.button__spinner}`}
-					size={size === 'sm' ? '0.875em' : size === 'lg' ? '1.25em' : '1em'}
+					size={
+						size === ButtonSize.Small
+							? '0.875em'
+							: size === ButtonSize.Large
+								? '1.25em'
+								: '1em'
+					}
 				/>
 			) : (
 				icon?.iconName && (

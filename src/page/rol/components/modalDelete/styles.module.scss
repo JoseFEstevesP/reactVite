@@ -1,0 +1,23 @@
+.modal {
+	&__content {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+	}
+
+	&__title {
+		font-size: 1.1em;
+		font-weight: 600;
+		margin: 0;
+	}
+
+	&__message {
+		margin: 0;
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.5em;
+	}
+}

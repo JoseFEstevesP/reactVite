@@ -4,7 +4,7 @@ import type { CheckboxProps } from './types';
 
 const Checkbox = ({
 	name,
-	value = false,
+	checked = false,
 	onChange,
 	label,
 	disabled = false,
@@ -13,7 +13,7 @@ const Checkbox = ({
 }: CheckboxProps) => {
 	const handleClick = () => {
 		if (!disabled && onChange) {
-			onChange(!value);
+			onChange(!checked);
 		}
 	};
 
@@ -31,7 +31,7 @@ const Checkbox = ({
 			<input
 				type="checkbox"
 				name={name}
-				checked={value}
+				checked={checked}
 				onChange={handleClick}
 				disabled={disabled}
 				className={style.checkbox__input}
@@ -39,17 +39,16 @@ const Checkbox = ({
 			<span
 				className={`
 					${style.checkbox__box}
-					${value ? style['checkbox__box--checked'] : ''}
+					${checked ? style['checkbox__box--checked'] : ''}
 					${disabled ? style['checkbox__box--disabled'] : ''}
 				`}
-				onClick={handleClick}
 				onKeyDown={handleKeyDown}
 				role="checkbox"
-				aria-checked={value}
+				aria-checked={checked}
 				aria-disabled={disabled}
 				tabIndex={disabled ? -1 : 0}
 			>
-				{value && (
+				{checked && (
 					<Icons iconName={checkedIcon} className={style.checkbox__icon} />
 				)}
 			</span>

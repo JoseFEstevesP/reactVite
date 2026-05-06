@@ -15,6 +15,8 @@ export const FilterDataDTO = z.object({
 			message: 'Límite inválido',
 		})
 		.optional(),
+	permission: z.string().optional(),
+	status: z.string().optional(),
 });
 
 export type FilterDataDTOType = z.infer<typeof FilterDataDTO>;

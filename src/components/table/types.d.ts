@@ -4,11 +4,11 @@ import type { PaginationProps } from '../pagination/types';
 export type ColumnAlign = 'left' | 'center' | 'right';
 
 export interface Column<T> {
-	key: keyof T;
+	key: keyof T | string;
 	label: string;
 	align?: ColumnAlign;
 	sortable?: boolean;
-	render?: (value: T[keyof T], row: T) => ReactNode;
+	render?: (value: unknown, row: T) => ReactNode;
 }
 
 export interface TableProps<T> {

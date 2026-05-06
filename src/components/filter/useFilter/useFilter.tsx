@@ -6,6 +6,9 @@ export interface FilterState {
 	limit: string;
 	order: string;
 	orderProperty: string;
+	search: string;
+	permission?: string;
+	status?: string;
 	page?: number;
 	[key: string]: string | number | undefined;
 }
@@ -22,6 +25,9 @@ const useFilter = ({
 			limit: LimitFetchData['d-20'],
 			order: OrderEnum.ASC,
 			orderProperty,
+			search: '',
+			permission: '',
+			status: '',
 			...addProperty,
 		}),
 		[addProperty, orderProperty],

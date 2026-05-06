@@ -1,12 +1,8 @@
-import { useQuery, type UseQueryResult } from '@tanstack/react-query';
+import { toastError } from '@/stores/toastStore';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import http from '../http';
 import type { RequestConfig } from '../types';
-
-export type UseGetState<TData, TError = Error> =
-	| { status: 'pending' }
-	| { status: 'loading' }
-	| { status: 'success'; data: TData }
-	| { status: 'error'; error: TError };
 
 interface UseGetOptions {
 	queryKey?: string[];
@@ -20,17 +16,14 @@ interface UseGetOptions {
 	refetchOnMount?: boolean;
 }
 
-export function useGet<TData>(
-	url: string,
-	options: UseGetOptions = {},
-): UseGetState<TData> & Pick<UseQueryResult<TData>, 'isFetching' | 'refetch'> {
+export function useGet<TData>(url: string, options: UseGetOptions = {}) {
 	const {
 		queryKey,
 		config,
 		staleTime = 1000 * 60 * 5,
 		gcTime = 1000 * 60 * 10,
 		enabled = true,
-		retry = 3,
+		retry = 2,
 		retryDelay,
 		refetchOnWindowFocus = false,
 		refetchOnMount = false,
@@ -51,17 +44,27 @@ export function useGet<TData>(
 		refetchOnMount,
 	});
 
-	const state = (() => {
-		if (result.isPending) return { status: 'pending' as const };
-		if (result.isLoading) return { status: 'loading' as const };
-		if (result.isError)
-			return { status: 'error' as const, error: result.error as Error };
-		return { status: 'success' as const, data: result.data as TData };
-	})();
+	useEffect(() => {
+		if (result.isError) {
+			const errorWithMessage = result.error as Error & {
+				_customMessage?: string;
+			};
+			const errorMessage =
+				errorWithMessage._customMessage ||
+				result.error.message ||
+				'Error en la solicitud';
+			toastError(errorMessage);
+		}
+	}, [result.isError, result.error]);
 
 	return {
-		...state,
+		data: result.data,
 		isFetching: result.isFetching,
+		isPending: result.isPending,
+		isLoading: result.isLoading,
+		isError: result.isError,
+		status: result.status,
+		error: result.error as Error,
 		refetch: result.refetch,
 	};
 }

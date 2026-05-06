@@ -1,0 +1,23 @@
+.modal {
+	&__content {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+	}
+
+	&__title {
+		font-size: 1.25rem;
+		font-weight: 600;
+	}
+
+	&__message {
+		font-size: 0.875rem;
+		color: var(--color-text-secondary, #666);
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.75rem;
+	}
+}

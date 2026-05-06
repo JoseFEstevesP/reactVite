@@ -1,10 +1,10 @@
+import { LimitFetchData } from '@/enums/limit';
+import { OrderEnum } from '@/enums/order';
+import { transformEnum } from '@/functions/transformEnum/transformEnum';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '../button/Button';
 import { Select } from '../select/Select';
-import { transformEnum } from '@/functions/transformEnum/transformEnum';
-import { LimitFetchData } from '@/enums/limit';
-import { OrderEnum } from '@/enums/order';
 import type { FilterDataDTOType } from './dto/filterDataDTO';
 import style from './styles.module.scss';
 
@@ -14,9 +14,19 @@ interface OrderConfig {
 	textOrderProperty: Record<string, string>;
 }
 
+export interface CustomSelectConfig {
+	name: keyof FilterDataDTOType | (string & {});
+	label: string;
+	options: Record<string, string>;
+	textOptions?: Record<string, string>;
+	withAllOption?: boolean;
+	allOptionLabel?: string;
+}
+
 export interface FilterProps {
 	className?: string;
 	orderConfig: OrderConfig;
+	customSelects?: CustomSelectConfig[];
 	onFilter: (data: FilterDataDTOType) => void;
 	onReset: () => void;
 	initialData?: FilterDataDTOType;
@@ -25,6 +35,7 @@ export interface FilterProps {
 const Filter = ({
 	className = '',
 	orderConfig,
+	customSelects = [],
 	onFilter,
 	onReset,
 	initialData,
@@ -34,13 +45,18 @@ const Filter = ({
 			orderProperty: orderConfig.defaultOrderProperty,
 			order: OrderEnum.ASC,
 			limit: LimitFetchData['d-20'],
+			...customSelects.reduce<Record<string, string>>((acc, select) => {
+				acc[select.name] = '';
+				return acc;
+			}, {}),
 		}),
-		[orderConfig.defaultOrderProperty],
+		[orderConfig.defaultOrderProperty, customSelects],
 	);
 
-	const { handleSubmit, watch, setValue, reset } = useForm<FilterDataDTOType>({
-		defaultValues: initialData || defaultValues,
-	});
+	const { handleSubmit, watch, setValue, reset, control } =
+		useForm<FilterDataDTOType>({
+			defaultValues: initialData || defaultValues,
+		});
 
 	const orderValue = watch('order') || OrderEnum.ASC;
 	const orderPropertyValue =
@@ -66,6 +82,7 @@ const Filter = ({
 		>
 			<div className={style.filter__selectWrapper}>
 				<Select
+					control={control}
 					name="order"
 					value={orderValue}
 					onChange={value =>
@@ -77,6 +94,7 @@ const Filter = ({
 			</div>
 			<div className={style.filter__selectWrapper}>
 				<Select
+					control={control}
 					name="orderProperty"
 					value={orderPropertyValue}
 					onChange={value => setValue('orderProperty', value)}
@@ -86,6 +104,7 @@ const Filter = ({
 			</div>
 			<div className={style.filter__selectWrapper}>
 				<Select
+					control={control}
 					name="limit"
 					value={limitValue}
 					onChange={value =>
@@ -95,19 +114,54 @@ const Filter = ({
 					placeholder="Límite"
 				/>
 			</div>
-			<Button
-				type="submit"
-				icon={{ iconName: 'filter' }}
-				className={style.filter__btn}
-				title="Aplicar filtro"
-			/>
-			<Button
-				type="button"
-				onClick={handleReset}
-				icon={{ iconName: 'filterOff' }}
-				className={style.filter__btn}
-				title="Resetear filtro"
-			/>
+			{customSelects.map(config => {
+				const allOption = config.withAllOption
+					? [
+							{
+								value: '',
+								label: config.allOptionLabel || 'Todo',
+							},
+						]
+					: [];
+
+				const options = [
+					...allOption,
+					...transformEnum({
+						transformEnum: config.options,
+						text: config.textOptions,
+					}),
+				];
+
+				return (
+					<div className={style.filter__selectWrapper} key={config.name}>
+						<Select
+							control={control}
+							name={config.name as string}
+							value={watch(config.name as keyof FilterDataDTOType) as string}
+							onChange={value =>
+								setValue(config.name as keyof FilterDataDTOType, value)
+							}
+							options={options}
+							placeholder={config.label}
+						/>
+					</div>
+				);
+			})}
+			<div className={style.filter__btnWrapper}>
+				<Button
+					type="submit"
+					icon={{ iconName: 'filter' }}
+					className={style.filter__btn}
+					title="Aplicar filtro"
+				/>
+				<Button
+					type="button"
+					onClick={handleReset}
+					icon={{ iconName: 'filterOff' }}
+					className={style.filter__btn}
+					title="Resetear filtro"
+				/>
+			</div>
 		</form>
 	);
 };

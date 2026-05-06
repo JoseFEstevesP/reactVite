@@ -1,0 +1,147 @@
+:root {
+	--pie-chart-bg: var(--color-bg-elevated);
+	--pie-chart-border: var(--color-border);
+	--pie-chart-text: var(--color-text-primary);
+	--pie-chart-text-muted: var(--color-text-secondary);
+	--pie-chart-value: var(--color-text-primary);
+	--pie-chart-value-bg: #ffffff;
+}
+
+@media (prefers-contrast: high) {
+	:root {
+		--pie-chart-bg: #ffffff;
+		--pie-chart-border: #000000;
+		--pie-chart-text: #000000;
+		--pie-chart-text-muted: #333333;
+		--pie-chart-value: #000000;
+		--pie-chart-value-bg: #ffffff;
+	}
+}
+
+.pieChart {
+	width: 20em;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+	background-color: var(--pie-chart-bg);
+	border: 0.0625em solid var(--pie-chart-border);
+	border-radius: var(--border-radius);
+	padding: 1em;
+	font-size: 1em;
+
+	&__container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5em;
+	}
+
+	&__chart {
+		width: 100%;
+		max-width: 20em;
+		aspect-ratio: 1;
+		position: relative;
+	}
+
+	&__svg {
+		width: 100%;
+		height: 100%;
+		transform: rotate(-90deg);
+	}
+
+	&__slice {
+		--slice-color: var(--color-accent);
+		fill: var(--slice-color);
+		transition: opacity var(--transition-base);
+		cursor: pointer;
+
+		&:hover {
+			opacity: 0.8;
+		}
+
+		&--animated {
+			animation: sliceFadeIn 0.5s ease-out forwards;
+			opacity: 0;
+		}
+	}
+
+	&__center {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		pointer-events: none;
+	}
+
+	&__centerValue {
+		font-size: 1.5em;
+		font-weight: 700;
+		color: var(--pie-chart-value);
+	}
+
+	&__centerLabel {
+		font-size: 0.75em;
+		color: var(--pie-chart-text-muted);
+	}
+
+	&__labels {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+	}
+
+	&__labelItem {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+		font-size: 0.875em;
+		color: var(--pie-chart-text);
+	}
+
+	&__labelColor {
+		width: 0.75em;
+		height: 0.75em;
+		border-radius: 0.125em;
+		flex-shrink: 0;
+	}
+
+	&__labelText {
+		flex: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	&__labelValue {
+		font-weight: 600;
+		color: var(--pie-chart-text-muted);
+	}
+
+	&__empty {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		max-width: 20em;
+		aspect-ratio: 1;
+		color: var(--pie-chart-text-muted);
+		font-size: 0.875em;
+	}
+}
+
+@keyframes sliceFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

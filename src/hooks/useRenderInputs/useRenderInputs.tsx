@@ -12,7 +12,8 @@ import type {
 const useRenderInputs = <T extends FieldValues>(
 	props?: UseRenderInputsType<T>,
 ) => {
-	const errors = props?.errors;
+	const { register, control, errors } = props ?? {};
+
 	const renderInput = ({
 		name,
 		placeholder,
@@ -34,6 +35,7 @@ const useRenderInputs = <T extends FieldValues>(
 				className={className}
 				iconName={iconName}
 				disabled={disabled}
+				register={register}
 			/>
 		);
 	};
@@ -53,6 +55,7 @@ const useRenderInputs = <T extends FieldValues>(
 		return (
 			<Select
 				name={name}
+				control={control}
 				options={options}
 				error={error}
 				label={label}
@@ -81,6 +84,7 @@ const useRenderInputs = <T extends FieldValues>(
 		return (
 			<SelectMultiple
 				name={name}
+				control={control}
 				options={options}
 				error={error}
 				label={label}

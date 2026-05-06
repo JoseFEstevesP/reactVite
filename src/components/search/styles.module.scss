@@ -1,40 +1,11 @@
 :root {
-	--search-bg: #ffffff;
-	--search-border: #e5e7eb;
-	--search-focus: #3b82f6;
-	--search-invalid: #ef4444;
-	--search-text: #111827;
-	--search-placeholder: #9ca3af;
-	--search-disabled-bg: #f3f4f6;
-}
-
-html[data-theme='dark'] {
-	--search-bg: #1f2937;
-	--search-border: #374151;
-	--search-focus: #2563eb;
-	--search-text: #f9fafb;
-	--search-placeholder: #9ca3af;
-	--search-disabled-bg: #374151;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--search-bg: #1f2937;
-		--search-border: #374151;
-		--search-focus: #2563eb;
-		--search-text: #f9fafb;
-		--search-placeholder: #9ca3af;
-		--search-disabled-bg: #374151;
-	}
-
-	html[data-theme='light'] {
-		--search-bg: #ffffff;
-		--search-border: #e5e7eb;
-		--search-focus: #3b82f6;
-		--search-text: #111827;
-		--search-placeholder: #9ca3af;
-		--search-disabled-bg: #f3f4f6;
-	}
+	--search-bg: var(--color-bg-elevated);
+	--search-border: var(--color-border);
+	--search-focus: var(--color-focus);
+	--search-invalid: var(--color-danger);
+	--search-text: var(--color-text-primary);
+	--search-placeholder: var(--color-text-muted);
+	--search-disabled-bg: var(--color-bg-hover);
 }
 
 @media (prefers-contrast: high) {

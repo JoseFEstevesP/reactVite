@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { type FieldValues, useController } from 'react-hook-form';
 import { Button } from '../button/Button';
 import { Icons } from '../icon/Icons';
 import { renderErrorMessage } from '../input/renderErrorMessage';
 import styles from './styles.module.scss';
 import type { SelectMultipleProps, SelectProps } from './types';
 
-const SelectInput = ({
+const SelectInput = <T extends FieldValues>({
+	name,
+	control,
 	label,
 	value,
-	onChange,
+	onChange: onChangeProp,
 	placeholder = 'Seleccionar...',
 	options = [],
 	error,
@@ -18,13 +21,24 @@ const SelectInput = ({
 	enableSearch = false,
 	iconName,
 	...props
-}: SelectProps) => {
+}: SelectProps<T>) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [search, setSearch] = useState('');
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const currentValue = value ?? defaultValue ?? '';
+	const {
+		field: { value: fieldValue, onChange: fieldOnChange },
+	} = useController({
+		name,
+		control,
+		defaultValue: defaultValue ?? '',
+	});
+
+	const currentValue = control
+		? (fieldValue ?? '')
+		: (value ?? defaultValue ?? '');
+	const handleChange = control ? fieldOnChange : onChangeProp;
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -62,7 +76,7 @@ const SelectInput = ({
 
 	const handleOptionClick = (optionValue: string) => {
 		if (!disabled) {
-			onChange?.(optionValue);
+			handleChange?.(optionValue);
 			setIsOpen(false);
 			setSearch('');
 		}
@@ -141,7 +155,7 @@ const SelectInput = ({
 				className={`${styles.select__dropdown} ${
 					isOpen ? styles['select__dropdown--open'] : ''
 				}`}
-				aria-hidden={!isOpen}
+				inert={!isOpen}
 			>
 				{enableSearch && (
 					<div className={styles.select__search}>
@@ -197,10 +211,12 @@ const SelectInput = ({
 	);
 };
 
-const SelectMultiple = ({
+const SelectMultiple = <T extends FieldValues>({
+	name,
+	control,
 	label,
 	value,
-	onChange,
+	onChange: onChangeProp,
 	placeholder = 'Seleccionar...',
 	options = [],
 	error,
@@ -210,13 +226,24 @@ const SelectMultiple = ({
 	enableSearch = false,
 	iconName,
 	...props
-}: SelectMultipleProps) => {
+}: SelectMultipleProps<T>) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [search, setSearch] = useState('');
 	const dropdownRef = useRef<HTMLDivElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const currentValue = value ?? defaultValue ?? [];
+	const {
+		field: { value: fieldValue, onChange: fieldOnChange },
+	} = useController({
+		name,
+		control,
+		defaultValue: defaultValue ?? [],
+	});
+
+	const currentValue = control
+		? (fieldValue ?? [])
+		: (value ?? defaultValue ?? []);
+	const handleChange = control ? fieldOnChange : onChangeProp;
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -255,9 +282,9 @@ const SelectMultiple = ({
 	const handleOptionClick = (optionValue: string) => {
 		if (!disabled) {
 			const newValue = currentValue.includes(optionValue)
-				? currentValue.filter(val => val !== optionValue)
+				? currentValue.filter((val: string) => val !== optionValue)
 				: [...currentValue, optionValue];
-			onChange?.(newValue);
+			handleChange?.(newValue);
 		}
 	};
 
@@ -269,7 +296,7 @@ const SelectMultiple = ({
 	};
 
 	const selectedLabels = currentValue
-		.map(val => options.find(opt => opt.value === val)?.label)
+		.map((val: string) => options.find(opt => opt.value === val)?.label)
 		.filter(Boolean)
 		.join(', ');
 
@@ -337,7 +364,7 @@ const SelectMultiple = ({
 				className={`${styles.select__dropdown} ${
 					isOpen ? styles['select__dropdown--open'] : ''
 				}`}
-				aria-hidden={!isOpen}
+				inert={!isOpen}
 				aria-multiselectable="true"
 			>
 				{enableSearch && (

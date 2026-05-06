@@ -8,9 +8,10 @@ export const transformEnum = ({
 	text?: Record<string, string>;
 }) => {
 	return Object.keys(transformEnum).map(item => {
+		const value = transformEnum[item];
 		return {
-			value: transformEnum[item],
-			label: text ? text[item] : transformEnum[item],
+			value,
+			label: text ? text[value] : value,
 		};
 	});
 };

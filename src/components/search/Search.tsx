@@ -1,6 +1,5 @@
 import { useCallback, useId, useState } from 'react';
 import { Button } from '../button/Button';
-import { Icons } from '../icon/Icons';
 import { renderErrorMessage } from '../input/renderErrorMessage';
 import styles from './styles.module.scss';
 import type { SearchProps } from './types';
@@ -8,6 +7,7 @@ import type { SearchProps } from './types';
 const Search = ({
 	value,
 	onChange,
+	onSubmit,
 	placeholder = 'Buscar...',
 	error,
 	className,
@@ -35,15 +35,15 @@ const Search = ({
 	const handleSubmit = useCallback(
 		(e: React.FormEvent) => {
 			e.preventDefault();
-			onChange?.(inputValue.trim());
+			const searchValue = inputValue.trim();
+			if (onSubmit) {
+				onSubmit(searchValue);
+			} else {
+				onChange?.(searchValue);
+			}
 		},
-		[onChange, inputValue],
+		[onChange, onSubmit, inputValue],
 	);
-
-	const handleClear = useCallback(() => {
-		setInputValue('');
-		onChange?.('');
-	}, [onChange]);
 
 	return (
 		<form
@@ -78,16 +78,6 @@ const Search = ({
 						autoComplete={autoComplete}
 					/>
 				</div>
-				{inputValue && !disabled && (
-					<button
-						type="button"
-						className={styles.search__clear}
-						onClick={handleClear}
-						aria-label="Limpiar búsqueda"
-					>
-						<Icons iconName="close" size="1em" />
-					</button>
-				)}
 				<Button
 					variant="ghost"
 					type="submit"
