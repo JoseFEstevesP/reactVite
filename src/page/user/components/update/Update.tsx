@@ -1,16 +1,14 @@
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGet } from '@/api/hooks/useGet';
 import { usePut } from '@/api/hooks/usePut';
 import { routes } from '@/api/url';
+import Form from '@/components/form/Form';
 import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
 import { useApiResponse } from '@/hooks/useApiResponse';
-import useRenderInputs from '@/hooks/useRenderInputs/useRenderInputs';
-import { useToast } from '@/hooks/useToast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { AxiosError } from 'axios';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
-import LForm from '../../../../layout/form/LForm';
 import {
 	UserUpdateFormSchema,
 	type UserDTOTypes,
@@ -18,24 +16,26 @@ import {
 	type UserUpdateFormTypes,
 } from '../../dto/UserDTO';
 import type { Role, RolesApiResponse } from '../../../rol/types';
-import styles from './../register/styles.module.scss';
+import { accountStatusOptions, statusUserOptions } from '../../options';
+import styles from '../styles/styles.module.scss';
 
 const Update = () => {
 	const { uid } = useParams();
 	const navigate = useNavigate();
-	const { error: toastError } = useToast();
 
 	useEffect(() => {
 		if (!uid) {
-			toastError('No se pudo encontrar el usuario');
 			navigate('/users');
 		}
-	}, [uid]);
+	}, [uid, navigate]);
 
-	const { data } = useGet<ApiResponse<UserDTOTypes>>(
+	const { data, isLoading } = useGet<ApiResponse<UserDTOTypes>>(
 		routes.user.one.replace(':uid', uid || ''),
 		{
 			enabled: !!uid,
+			staleTime: 0,
+			gcTime: 0,
+			refetchOnMount: true,
 		},
 	);
 
@@ -44,15 +44,15 @@ const Update = () => {
 		control,
 		formState: { errors },
 		handleSubmit,
-		setError,
+		setError: setFormError,
 		setValue,
 	} = useForm<UserUpdateFormTypes>({
-		resolver: zodResolver(UserUpdateFormSchema),
+		resolver: zodResolver(UserUpdateFormSchema) as never,
 	});
 
 	useEffect(() => {
-		if (data && uid) {
-			setValue('uid', uid);
+		if (data?.data) {
+			setValue('uid', data.data.uid);
 			setValue('names', data.data.names);
 			setValue('surnames', data.data.surnames);
 			setValue('phone', data.data.phone);
@@ -64,19 +64,7 @@ const Update = () => {
 				data.data.activatedAccount ? 'true' : 'false',
 			);
 		}
-	}, [data, uid, setValue]);
-
-	const { handleSuccess, handleError } = useApiResponse();
-	const { mutate: handlePut } = usePut<
-		ApiResponse<{ msg: string }>,
-		AxiosError<ApiErrorResponse>,
-		UserUpdateDTOTypes
-	>(routes.user.base);
-	const { renderInput, renderSelect } = useRenderInputs({
-		register,
-		control,
-		errors,
-	});
+	}, [data, setValue]);
 
 	const { data: rolesData } = useGet<RolesApiResponse>(routes.rol.base, {
 		enabled: true,
@@ -88,30 +76,32 @@ const Update = () => {
 			label: rol.name,
 		})) || [];
 
-	const statusOptions: { value: string; label: string }[] = [
-		{ value: 'true', label: 'Activo' },
-		{ value: 'false', label: 'Inactivo' },
-	];
+	const { handleSuccess, handleError } = useApiResponse();
+	const { mutate: handlePut } = usePut<
+		ApiResponse<{ msg: string }>,
+		AxiosError<ApiErrorResponse>,
+		UserUpdateDTOTypes
+	>(routes.user.base, { queryKey: ['users'] });
 
-	const activatedAccountOptions: { value: string; label: string }[] = [
-		{ value: 'true', label: 'Sí' },
-		{ value: 'false', label: 'No' },
-	];
-
-	const onSubmit = (data: UserUpdateFormTypes) => {
-		const payload = {
-			...data,
-			status: data.status === 'true',
-			activatedAccount: data.activatedAccount === 'true',
+	const onSubmit = (formData: UserUpdateFormTypes) => {
+		const payload: UserUpdateDTOTypes = {
+			uid: formData.uid,
+			names: formData.names,
+			surnames: formData.surnames,
+			phone: formData.phone,
+			email: formData.email,
+			uidRol: formData.uidRol,
+			status: formData.status === 'true',
+			activatedAccount: formData.activatedAccount === 'true',
 		};
-		handlePut(payload as unknown as UserUpdateDTOTypes, {
+		handlePut(payload, {
 			onSuccess: res => {
 				handleSuccess(res);
 				navigate('/users');
 			},
 			onError: err => {
 				handleError(err, (field, message) => {
-					setError(field as keyof UserUpdateFormTypes, {
+					setFormError(field as keyof UserUpdateFormTypes, {
 						type: 'server',
 						message,
 					});
@@ -120,50 +110,71 @@ const Update = () => {
 		});
 	};
 
+	if (!uid || isLoading) {
+		return null;
+	}
+
+	const renderOptions = [
+		{
+			type: 'input' as const,
+			name: 'names',
+			placeholder: 'Nombres',
+			label: 'Nombres',
+		},
+		{
+			type: 'input' as const,
+			name: 'surnames',
+			placeholder: 'Apellidos',
+			label: 'Apellidos',
+		},
+		{
+			type: 'input' as const,
+			name: 'phone',
+			placeholder: 'Teléfono',
+			label: 'Teléfono',
+		},
+		{
+			type: 'input' as const,
+			name: 'email',
+			placeholder: 'Correo',
+			label: 'Correo',
+			inputType: 'email' as const,
+		},
+		{
+			type: 'select' as const,
+			name: 'uidRol',
+			placeholder: 'Seleccionar rol',
+			label: 'Rol',
+			options: roleOptions,
+		},
+		{
+			type: 'select' as const,
+			name: 'status',
+			placeholder: 'Seleccionar estado',
+			label: 'Estado',
+			options: statusUserOptions,
+		},
+		{
+			type: 'select' as const,
+			name: 'activatedAccount',
+			placeholder: 'Cuenta activada',
+			label: 'Cuenta activada',
+			options: accountStatusOptions,
+		},
+	];
+
 	return (
-		<section className={styles.register}>
-			<LForm title="Actualizar Usuario" onSubmit={handleSubmit(onSubmit)}>
-				{renderInput({
-					name: 'names',
-					placeholder: 'Nombres',
-					label: 'Nombres',
-				})}
-				{renderInput({
-					name: 'surnames',
-					placeholder: 'Apellidos',
-					label: 'Apellidos',
-				})}
-				{renderInput({
-					name: 'phone',
-					placeholder: 'Teléfono',
-					label: 'Teléfono',
-				})}
-				{renderInput({
-					name: 'email',
-					placeholder: 'Correo',
-					label: 'Correo',
-					type: 'email',
-				})}
-				{renderSelect({
-					name: 'uidRol',
-					placeholder: 'Seleccionar rol',
-					label: 'Rol',
-					options: roleOptions,
-				})}
-				{renderSelect({
-					name: 'status',
-					placeholder: 'Seleccionar estado',
-					label: 'Estado',
-					options: statusOptions,
-				})}
-				{renderSelect({
-					name: 'activatedAccount',
-					placeholder: 'Cuenta activada',
-					label: 'Cuenta activada',
-					options: activatedAccountOptions,
-				})}
-			</LForm>
+		<section className={styles.form}>
+			<Form
+				title="Actualizar Usuario"
+				onSubmit={handleSubmit(onSubmit) as never}
+				register={register}
+				errors={errors}
+				control={control}
+				renderOptions={renderOptions}
+			/>
 		</section>
 	);
 };
+
 export default Update;

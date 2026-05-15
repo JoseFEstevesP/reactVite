@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { NameIcon } from '../icon/types';
 
 export type MenuOrientation = 'vertical' | 'horizontal';
@@ -18,6 +19,6 @@ export interface MenuProps {
 	showProfile?: boolean;
 	showThemeToggle?: boolean;
 	userName?: string;
-	onProfileClick?: () => void;
+	notificationBell?: ReactNode;
 	className?: string;
 }

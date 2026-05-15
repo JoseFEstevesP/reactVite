@@ -1,0 +1,140 @@
+.dashboard {
+	display: flex;
+	flex-direction: column;
+	font-size: 1em;
+	gap: 1.5em;
+
+	&__title {
+		font-size: 1.5em;
+		font-weight: 700;
+		color: var(--color-text-primary);
+		margin: 0;
+	}
+
+	&__loading,
+	&__error,
+	&__empty {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 3em;
+		color: var(--color-text-secondary);
+		font-size: 0.875em;
+	}
+
+	&__error {
+		flex-direction: column;
+		gap: 1em;
+
+		p {
+			margin: 0;
+		}
+
+		button {
+			padding: 0.5em 1em;
+			border: 1px solid var(--color-border);
+			border-radius: var(--border-radius-sm);
+			background-color: var(--color-bg-elevated);
+			color: var(--color-text-primary);
+			cursor: pointer;
+			font-size: 0.875em;
+
+			&:hover {
+				background-color: var(--color-bg-hover);
+			}
+		}
+	}
+
+	&__cards {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1em;
+
+		@media screen and (min-width: 768px) {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	&__card {
+		display: flex;
+		align-items: center;
+		gap: 1em;
+		padding: 1em;
+		background-color: var(--color-bg-elevated);
+		border: 1px solid var(--color-border);
+		border-radius: var(--border-radius);
+	}
+
+	&__cardIcon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5em;
+		height: 2.5em;
+		border-radius: var(--border-radius-sm);
+		background-color: var(--color-accent);
+		color: #ffffff;
+		font-size: 1.25em;
+		font-weight: 700;
+		flex-shrink: 0;
+	}
+
+	&__cardLabel {
+		margin: 0;
+		font-size: 0.75em;
+		color: var(--color-text-secondary);
+	}
+
+	&__cardValue {
+		margin: 0;
+		font-size: 1.25em;
+		font-weight: 700;
+		color: var(--color-text-primary);
+	}
+
+	&__cardValueSm {
+		margin: 0;
+		font-size: 0.875em;
+		font-weight: 600;
+		color: var(--color-text-primary);
+	}
+
+	&__charts {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1em;
+
+		@media screen and (min-width: 768px) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@media screen and (min-width: 1200px) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	&__chartItem {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75em;
+	}
+
+	&__chartTitle {
+		font-size: 0.875em;
+		font-weight: 600;
+		color: var(--color-text-primary);
+		margin: 0;
+		text-align: center;
+	}
+
+	&__chartsWide {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1em;
+
+		@media screen and (min-width: 768px) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+}

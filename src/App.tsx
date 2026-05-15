@@ -4,6 +4,7 @@ import ProtectedRoute from './components/protected-route/ProtectedRoute';
 import LDashboard from './layout/dashboard/LDashboard';
 import AuditPage from './page/audit/AuditPage';
 import Dashboard from './page/dashboard/Dashboard';
+import ProfilePage from './page/profile/ProfilePage';
 import RolPage from './page/rol/RolPage';
 import Register from './page/rol/components/register/Register';
 import Update from './page/rol/components/update/Update';
@@ -42,6 +43,7 @@ const App = () => {
 					<Route path="/audits">
 						<Route index element={<AuditPage />} />
 					</Route>
+					<Route path="/profile" element={<ProfilePage />} />
 				</Route>
 			</Route>
 		</Routes>

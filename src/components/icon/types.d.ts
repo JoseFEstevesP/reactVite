@@ -4,12 +4,18 @@ export type NameIcon =
 	| 'add'
 	| 'arrow'
 	| 'audit'
+	| 'bell'
 	| 'checkBoxOff'
 	| 'subscription'
+	| 'system'
 	| 'checkBoxOn'
+	| 'code'
 	| 'close'
 	| 'company'
+	| 'companyRequest'
+	| 'companySyste'
 	| 'delete'
+	| 'plan'
 	| 'edit'
 	| 'email'
 	| 'exit'
@@ -31,6 +37,8 @@ export type NameIcon =
 	| 'spinner'
 	| 'sun'
 	| 'date'
+	| 'historyPayment'
+	| 'system'
 	| 'user';
 
 export interface IconParameter extends SVGProps<SVGSVGElement> {

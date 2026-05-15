@@ -12,6 +12,7 @@ export function QueryProvider({ children }: QueryProviderProps) {
         gcTime: 1000 * 60 * 30,
         retry: 1,
         refetchOnWindowFocus: false,
+        refetchOnMount: true,
       },
       mutations: {
         retry: 0,

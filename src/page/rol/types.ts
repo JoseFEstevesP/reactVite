@@ -1,3 +1,5 @@
+import type { RolUpdateFormTypes } from './dto/RolDTO';
+
 export interface Role {
 	uid: string;
 	name: string;
@@ -23,3 +25,11 @@ export interface ApiResponse<T> {
 }
 
 export type RolesApiResponse = ApiResponse<RolesResponse>;
+
+export type FormMode = 'register' | 'update';
+
+export interface Props {
+	mode: FormMode;
+	initialData?: RolUpdateFormTypes;
+	onSubmit: (data: RolUpdateFormTypes) => void;
+}

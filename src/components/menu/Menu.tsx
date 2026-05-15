@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Button } from '../button/Button';
 import { ButtonTheme } from '../buttonTheme/ButtonTheme';
 import { Icons } from '../icon/Icons';
+import Link from '../link/Link';
 import styles from './styles.module.scss';
 import type { MenuItem, MenuProps } from './types';
 
@@ -90,7 +91,7 @@ const Menu = ({
 	showProfile = false,
 	showThemeToggle = false,
 	userName,
-	onProfileClick,
+	notificationBell,
 	className = '',
 }: MenuProps) => {
 	const [internalExpanded, setInternalExpanded] = useState(false);
@@ -134,18 +135,17 @@ const Menu = ({
 					className={`${styles.menu__actions} ${expanded ? styles['menu__actions--expanded'] : ''}`}
 				>
 					{showProfile && (
-						<button
-							type="button"
-							className={styles.menu__profile}
-							onClick={onProfileClick}
+						<Link
+							variant="ghost"
+							to="/profile"
 							title={userName || 'Perfil'}
-						>
-							<Icons iconName="profile" className={styles.menu__profileIcon} />
-							{expanded && userName && (
-								<span className={styles.menu__profileName}>{userName}</span>
-							)}
-						</button>
+							icon={{
+								iconName: 'profile',
+							}}
+							size="lg"
+						></Link>
 					)}
+					{notificationBell}
 					{showThemeToggle && <ButtonTheme />}
 					{onLogout && (
 						<Button

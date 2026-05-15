@@ -7,6 +7,12 @@ const primaryPermissions = {
 	system: 'SYSTEM',
 	subscription: 'SUBSCRIPTION',
 	payment: 'PAYMENT',
+	paymentMethod: 'PAYMENTMETHOD',
+	language: 'LANGUAGE',
+	companySyste: 'COMPANYSYSTE',
+	companyRequest: 'COMPANYREQUEST',
+	historyPayment: 'HISTORYPAYMENT',
+	notification: 'NOTIFICATION',
 };
 
 const permissions = {
@@ -51,6 +57,48 @@ const permissions = {
 	paymentReadOne: `${primaryPermissions.payment}_READ_ONE`,
 	paymentUpdate: `${primaryPermissions.payment}_UPDATE`,
 	paymentDelete: `${primaryPermissions.payment}_DELETE`,
+	paymentMethod: primaryPermissions.paymentMethod,
+	paymentMethodAdd: `${primaryPermissions.paymentMethod}_ADD`,
+	paymentMethodRead: `${primaryPermissions.paymentMethod}_READ`,
+	paymentMethodReadOne: `${primaryPermissions.paymentMethod}_READ_ONE`,
+	paymentMethodUpdate: `${primaryPermissions.paymentMethod}_UPDATE`,
+	paymentMethodDelete: `${primaryPermissions.paymentMethod}_DELETE`,
+	language: primaryPermissions.language,
+	languageAdd: `${primaryPermissions.language}_ADD`,
+	languageRead: `${primaryPermissions.language}_READ`,
+	languageReadOne: `${primaryPermissions.language}_READ_ONE`,
+	languageUpdate: `${primaryPermissions.language}_UPDATE`,
+	languageDelete: `${primaryPermissions.language}_DELETE`,
+	companySyste: primaryPermissions.companySyste,
+	companySysteAdd: `${primaryPermissions.companySyste}_ADD`,
+	companySysteRead: `${primaryPermissions.companySyste}_READ`,
+	companySysteReadOne: `${primaryPermissions.companySyste}_READ_ONE`,
+	companySysteUpdate: `${primaryPermissions.companySyste}_UPDATE`,
+	companySysteDelete: `${primaryPermissions.companySyste}_DELETE`,
+	companyRequest: primaryPermissions.companyRequest,
+	companyRequestAdd: `${primaryPermissions.companyRequest}_ADD`,
+	companyRequestRead: `${primaryPermissions.companyRequest}_READ`,
+	companyRequestReadOne: `${primaryPermissions.companyRequest}_READ_ONE`,
+	companyRequestUpdate: `${primaryPermissions.companyRequest}_UPDATE`,
+	companyRequestDelete: `${primaryPermissions.companyRequest}_DELETE`,
+	historyPayment: primaryPermissions.historyPayment,
+	historyPaymentAdd: `${primaryPermissions.historyPayment}_ADD`,
+	historyPaymentRead: `${primaryPermissions.historyPayment}_READ`,
+	historyPaymentReadOne: `${primaryPermissions.historyPayment}_READ_ONE`,
+	historyPaymentUpdate: `${primaryPermissions.historyPayment}_UPDATE`,
+	historyPaymentDelete: `${primaryPermissions.historyPayment}_DELETE`,
+	notification: primaryPermissions.notification,
+	notificationAdd: `${primaryPermissions.notification}_ADD`,
+	notificationRead: `${primaryPermissions.notification}_READ`,
+	notificationReadOne: `${primaryPermissions.notification}_READ_ONE`,
+	notificationUpdate: `${primaryPermissions.notification}_UPDATE`,
+	notificationDelete: `${primaryPermissions.notification}_DELETE`,
+	notificationPaymentFailed: `${primaryPermissions.notification}_PAYMENT_FAILED`,
+	notificationPaymentSuccess: `${primaryPermissions.notification}_PAYMENT_SUCCESS`,
+	notificationPaymentOverdue: `${primaryPermissions.notification}_PAYMENT_OVERDUE`,
+	notificationServerConnected: `${primaryPermissions.notification}_SERVER_CONNECTED`,
+	notificationServerDisconnected: `${primaryPermissions.notification}_SERVER_DISCONNECTED`,
+	notificationSystemAlert: `${primaryPermissions.notification}_SYSTEM_ALERT`,
 } as const;
 
 export const textPermission: Record<string, string> = {
@@ -96,6 +144,67 @@ export const textPermission: Record<string, string> = {
 	[`${primaryPermissions.payment}_READ_ONE`]: 'Leer pago específico',
 	[`${primaryPermissions.payment}_UPDATE`]: 'Actualizar pago',
 	[`${primaryPermissions.payment}_DELETE`]: 'Eliminar pago',
+	[permissions.paymentMethod]: 'Método de pago',
+	[`${primaryPermissions.paymentMethod}_ADD`]: 'Agregar método de pago',
+	[`${primaryPermissions.paymentMethod}_READ`]: 'Leer método de pago',
+	[`${primaryPermissions.paymentMethod}_READ_ONE`]:
+		'Leer método de pago específico',
+	[`${primaryPermissions.paymentMethod}_UPDATE`]: 'Actualizar método de pago',
+	[`${primaryPermissions.paymentMethod}_DELETE`]: 'Eliminar método de pago',
+	[permissions.language]: 'Idioma',
+	[`${primaryPermissions.language}_ADD`]: 'Agregar idioma',
+	[`${primaryPermissions.language}_READ`]: 'Leer idioma',
+	[`${primaryPermissions.language}_READ_ONE`]: 'Leer idioma específico',
+	[`${primaryPermissions.language}_UPDATE`]: 'Actualizar idioma',
+	[`${primaryPermissions.language}_DELETE`]: 'Eliminar idioma',
+	[permissions.companySyste]: 'Sistema de empresa',
+	[`${primaryPermissions.companySyste}_ADD`]: 'Agregar sistema de empresa',
+	[`${primaryPermissions.companySyste}_READ`]: 'Leer sistema de empresa',
+	[`${primaryPermissions.companySyste}_READ_ONE`]:
+		'Leer sistema de empresa específico',
+	[`${primaryPermissions.companySyste}_UPDATE`]:
+		'Actualizar sistema de empresa',
+	[`${primaryPermissions.companySyste}_DELETE`]:
+		'Eliminar sistema de empresa',
+	[permissions.companyRequest]: 'Solicitud de empresa',
+	[`${primaryPermissions.companyRequest}_ADD`]:
+		'Agregar solicitud de empresa',
+	[`${primaryPermissions.companyRequest}_READ`]:
+		'Leer solicitud de empresa',
+	[`${primaryPermissions.companyRequest}_READ_ONE`]:
+		'Leer solicitud de empresa específica',
+	[`${primaryPermissions.companyRequest}_UPDATE`]:
+		'Actualizar solicitud de empresa',
+	[`${primaryPermissions.companyRequest}_DELETE`]:
+		'Eliminar solicitud de empresa',
+	[permissions.historyPayment]: 'Historial de pago',
+	[`${primaryPermissions.historyPayment}_ADD`]: 'Agregar historial de pago',
+	[`${primaryPermissions.historyPayment}_READ`]: 'Leer historial de pago',
+	[`${primaryPermissions.historyPayment}_READ_ONE`]:
+		'Leer historial de pago específico',
+	[`${primaryPermissions.historyPayment}_UPDATE`]:
+		'Actualizar historial de pago',
+	[`${primaryPermissions.historyPayment}_DELETE`]:
+		'Eliminar historial de pago',
+	[permissions.notification]: 'Notificación',
+	[`${primaryPermissions.notification}_ADD`]: 'Agregar notificación',
+	[`${primaryPermissions.notification}_READ`]: 'Leer notificación',
+	[`${primaryPermissions.notification}_READ_ONE`]:
+		'Leer notificación específica',
+	[`${primaryPermissions.notification}_UPDATE`]: 'Actualizar notificación',
+	[`${primaryPermissions.notification}_DELETE`]: 'Eliminar notificación',
+	[`${primaryPermissions.notification}_PAYMENT_FAILED`]:
+		'Notificación de pago fallido',
+	[`${primaryPermissions.notification}_PAYMENT_SUCCESS`]:
+		'Notificación de pago exitoso',
+	[`${primaryPermissions.notification}_PAYMENT_OVERDUE`]:
+		'Notificación de pago vencido',
+	[`${primaryPermissions.notification}_SERVER_CONNECTED`]:
+		'Notificación de servidor conectado',
+	[`${primaryPermissions.notification}_SERVER_DISCONNECTED`]:
+		'Notificación de servidor desconectado',
+	[`${primaryPermissions.notification}_SYSTEM_ALERT`]:
+		'Alerta del sistema',
 };
 
 export { permissions as Permission };

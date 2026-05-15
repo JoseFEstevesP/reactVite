@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { LoginDTOSchema, type LoginDTOTypes } from './dto/LoginDTO';
+import styles from './styles.module.scss';
 
 const Login = () => {
 	const {
@@ -31,25 +32,27 @@ const Login = () => {
 	}, [isInitialized, token]);
 
 	return (
-		<LForm
-			title="Inicia sección"
-			theme
-			size="sm"
-			onSubmit={handleSubmit(handleLogin)}
-		>
-			{renderInput({
-				name: 'email',
-				placeholder: 'Correo',
-				label: 'Correo',
-				type: 'email',
-			})}
-			{renderInput({
-				name: 'password',
-				placeholder: 'Contraseña',
-				label: 'Contraseña',
-				type: 'password',
-			})}
-		</LForm>
+		<section className={styles.login}>
+			<LForm
+				title="Inicia sección"
+				theme
+				size="sm"
+				onSubmit={handleSubmit(handleLogin)}
+			>
+				{renderInput({
+					name: 'email',
+					placeholder: 'Correo',
+					label: 'Correo',
+					type: 'email',
+				})}
+				{renderInput({
+					name: 'password',
+					placeholder: 'Contraseña',
+					label: 'Contraseña',
+					type: 'password',
+				})}
+			</LForm>
+		</section>
 	);
 };
 export default Login;

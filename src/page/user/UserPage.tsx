@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { useDelete } from '@/api/hooks/useDelete';
 import { useGet } from '@/api/hooks/useGet';
 import { routes } from '@/api/url';
-import type { ApiResponse, ApiErrorResponse } from '@/globalTypes';
-import { useApiResponse } from '@/hooks/useApiResponse';
 import { Button } from '@/components/button/Button';
 import Filter from '@/components/filter/Filter';
 import useFilter from '@/components/filter/useFilter/useFilter';
@@ -12,23 +10,15 @@ import Link from '@/components/link/Link';
 import { useModal } from '@/components/modal/hooks/useModal';
 import Search from '@/components/search/Search';
 import Table from '@/components/table/Table';
+import { ModuleStatus, textModuleStatus } from '@/globalOptions';
+import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
+import { useApiResponse } from '@/hooks/useApiResponse';
 import { useToast } from '@/hooks/useToast';
 import type { AxiosError } from 'axios';
 import ModalDelete from './components/modalDelete/ModalDelete';
 import { OrderUserProperty, textOrderUser } from './enum/Order';
 import styles from './styles.module.scss';
 import type { User, UsersApiResponse } from './types';
-
-const UserStatus = {
-	all: '',
-	active: 'true',
-	inactive: 'false',
-};
-
-const textUserStatus: Record<string, string> = {
-	[UserStatus.active]: 'Activo',
-	[UserStatus.inactive]: 'Inactivo',
-};
 
 const UserPage = () => {
 	const { success } = useToast();
@@ -178,8 +168,8 @@ const UserPage = () => {
 							{
 								name: 'status',
 								label: 'Estado',
-								options: UserStatus,
-								textOptions: textUserStatus,
+								options: ModuleStatus,
+								textOptions: textModuleStatus,
 								withAllOption: true,
 								allOptionLabel: 'Todo',
 							},

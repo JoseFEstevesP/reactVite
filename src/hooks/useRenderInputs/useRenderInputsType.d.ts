@@ -2,6 +2,8 @@ import { FieldErrors, UseFormRegister, Control } from 'react-hook-form';
 import type { NameIcon } from '../../components/icon/types';
 import type { TypeInput } from '../../components/input/types';
 
+export type CurrencySymbol = '$' | 'BS' | 'Bs.' | '\u20AC';
+
 export interface ValueAll {
 	value: string;
 	label: string;
@@ -54,4 +56,16 @@ export interface RenderSelectMultipleType {
 	defaultValue?: string[];
 	disabled?: boolean;
 	iconName?: NameIcon;
+}
+
+export interface RenderCurrencyType {
+	name: string;
+	nameCurrency?: string;
+	label?: string;
+	placeholder?: string;
+	className?: string;
+	defaultValue?: string;
+	defaultCurrency?: CurrencySymbol;
+	max?: number;
+	disabled?: boolean;
 }

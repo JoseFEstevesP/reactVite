@@ -177,14 +177,15 @@
 		padding: 0.5em;
 		color: var(--menu-text);
 		transition: background-color var(--transition-base);
+		font-size: 1.5em;
 
 		&:hover {
 			background-color: var(--menu-item-hover);
 		}
 
 		&:focus-visible {
-			outline: 2px solid var(--color-focus);
-			outline-offset: 2px;
+			outline: 0.125em solid var(--color-focus);
+			outline-offset: 0.125em;
 		}
 	}
 

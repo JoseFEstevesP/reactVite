@@ -30,8 +30,8 @@
 		color var(--transition-base);
 
 	&:focus-visible {
-		outline: 2px solid var(--color-focus);
-		outline-offset: 2px;
+		outline: 0.125em solid var(--color-focus);
+		outline-offset: 0.125em;
 	}
 
 	&--sm {
@@ -42,13 +42,13 @@
 
 	&--md {
 		font-size: 1em;
-		padding: 0.375em 0.75em;
+		padding: 0.25em 0.5em;
 		border-radius: 0.375em;
 	}
 
 	&--lg {
-		font-size: 1.125em;
-		padding: 0.5em 1em;
+		font-size: 1.5em;
+		padding: 0.25em 0.5em;
 		border-radius: 0.5em;
 	}
 
@@ -62,7 +62,7 @@
 
 	&--secondary {
 		background-color: var(--link-secondary-bg);
-		border: 1px solid var(--link-secondary-border);
+		border: 0.0625em solid var(--link-secondary-border);
 		color: var(--link-text-secondary);
 
 		&:hover {

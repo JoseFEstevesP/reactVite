@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { useDelete } from '@/api/hooks/useDelete';
 import { useGet } from '@/api/hooks/useGet';
 import { routes } from '@/api/url';
-import type { ApiResponse, ApiErrorResponse } from '@/globalTypes';
-import { useApiResponse } from '@/hooks/useApiResponse';
 import { Button } from '@/components/button/Button';
 import Filter from '@/components/filter/Filter';
 import useFilter from '@/components/filter/useFilter/useFilter';
@@ -12,6 +10,9 @@ import Link from '@/components/link/Link';
 import { useModal } from '@/components/modal/hooks/useModal';
 import Search from '@/components/search/Search';
 import Table from '@/components/table/Table';
+import { ModuleStatus, textModuleStatus } from '@/globalOptions';
+import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
+import { useApiResponse } from '@/hooks/useApiResponse';
 import { useToast } from '@/hooks/useToast';
 import type { AxiosError } from 'axios';
 import ModalDelete from './components/modalDelete/ModalDelete';
@@ -19,17 +20,6 @@ import { OrderRolProperty, textOrderRol } from './enum/Order';
 import { Permission, textPermission } from './enum/Permissions';
 import styles from './styles.module.scss';
 import type { Role, RolesApiResponse } from './types';
-
-const RolStatus = {
-	all: '',
-	active: 'true',
-	inactive: 'false',
-};
-
-const textRolStatus: Record<string, string> = {
-	[RolStatus.active]: 'Activo',
-	[RolStatus.inactive]: 'Inactivo',
-};
 
 const RolPage = () => {
 	const { success } = useToast();
@@ -183,8 +173,8 @@ const RolPage = () => {
 							{
 								name: 'status',
 								label: 'Estado',
-								options: RolStatus,
-								textOptions: textRolStatus,
+								options: ModuleStatus,
+								textOptions: textModuleStatus,
 								withAllOption: true,
 								allOptionLabel: 'Todo',
 							},

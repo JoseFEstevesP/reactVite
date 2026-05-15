@@ -1,10 +1,11 @@
 .main {
-	width: 100%;
+	width: 100dvw;
 	height: 100vh;
-	font-size: 1rem;
+	font-size: 0.8em;
 	display: grid;
 	grid-template-columns: auto 1fr;
 	grid-template-areas: 'sidebar main';
+	min-width: 0;
 
 	&__sidebar {
 		grid-area: sidebar;
@@ -12,6 +13,7 @@
 
 	&__content {
 		grid-area: main;
+		min-width: 0;
 		padding: 1em;
 	}
 }

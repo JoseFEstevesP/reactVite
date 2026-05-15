@@ -1,11 +1,13 @@
-import { type FieldValues } from 'react-hook-form';
+import { type FieldValues, type Control } from 'react-hook-form';
 import { Input } from '../../components/input/Input';
 import type { ErrorInput } from '../../components/input/types';
 import { Select, SelectMultiple } from '../../components/select/Select';
+import { CurrencyInput } from '../../components/currency/CurrencyInput';
 import type {
 	RenderInputType,
 	RenderSelectMultipleType,
 	RenderSelectType,
+	RenderCurrencyType,
 	UseRenderInputsType,
 } from './useRenderInputsType';
 
@@ -98,7 +100,35 @@ const useRenderInputs = <T extends FieldValues>(
 		);
 	};
 
-	return { renderInput, renderSelect, renderSelectMultiple };
+	const renderCurrency = ({
+		name,
+		nameCurrency,
+		label,
+		placeholder,
+		defaultValue,
+		defaultCurrency,
+		max,
+		disabled,
+	}: RenderCurrencyType) => {
+		const fieldError = errors ? (errors[name as keyof T] as ErrorInput) : undefined;
+
+		return (
+			<CurrencyInput<T>
+				name={name}
+				nameCurrency={nameCurrency}
+				label={label}
+				placeholder={placeholder}
+				defaultValue={defaultValue}
+				defaultCurrency={defaultCurrency}
+				error={fieldError}
+				max={max}
+				disabled={disabled}
+				control={control as Control<T>}
+			/>
+		);
+	};
+
+	return { renderInput, renderSelect, renderSelectMultiple, renderCurrency };
 };
 
 export default useRenderInputs;
