@@ -4,6 +4,7 @@ import type {
 	NotificationType,
 } from '@/api/notification/types';
 import { Button } from '@/components/button/Button';
+import Loader from '@/components/loader/Loader';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 
@@ -77,7 +78,8 @@ const NotificationItem = ({
 const NotificationBell = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
-	const { data, isPending, isError } = useNotifications();
+	const { data, isPending, isError, refetch, isRefetching } =
+		useNotifications();
 	const markAsRead = useMarkAsRead();
 
 	const notifications = data?.data ?? [];
@@ -133,16 +135,34 @@ const NotificationBell = () => {
 				<div className={styles.panel}>
 					<div className={styles.panel__header}>
 						<span className={styles.panel__headerTitle}>Notificaciones</span>
+						<Button
+							variant="ghost"
+							size="sm"
+							className={styles.panel__reloadBtn}
+							onClick={() => refetch()}
+							aria-label="Recargar notificaciones"
+							loading={isRefetching}
+							icon={{ iconName: 'spinner' }}
+						/>
 						<span className={styles.panel__headerCount}>
 							{unreadCount} sin leer
 						</span>
 					</div>
 
 					{isPending ? (
-						<div className={styles.panel__loading}>Cargando...</div>
+						<div className={styles.panel__loading}>
+							<Loader />
+						</div>
 					) : isError ? (
 						<div className={styles.panel__error}>
-							Error al cargar notificaciones
+							<span>Error al cargar notificaciones</span>
+							<button
+								type="button"
+								className={styles.panel__retryBtn}
+								onClick={() => refetch()}
+							>
+								Reintentar
+							</button>
 						</div>
 					) : notifications.length === 0 ? (
 						<div className={styles.panel__empty}>No hay notificaciones</div>

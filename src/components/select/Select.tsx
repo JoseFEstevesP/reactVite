@@ -115,7 +115,7 @@ const SelectInput = <T extends FieldValues>({
 					</div>
 				)}
 				<Button
-					variant="theme"
+					variant="ghost"
 					onClick={handleToggle}
 					className={styles.select__btn}
 					aria-haspopup="listbox"
@@ -324,7 +324,7 @@ const SelectMultiple = <T extends FieldValues>({
 					</div>
 				)}
 				<Button
-					variant="theme"
+					variant="ghost"
 					onClick={handleToggle}
 					className={styles.select__btn}
 					aria-haspopup="listbox"
