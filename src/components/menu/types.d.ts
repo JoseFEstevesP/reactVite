@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { NameIcon } from '../icon/types';
+import type { IconPack, NameIcon } from '../icon/types';
 
 export type MenuOrientation = 'vertical' | 'horizontal';
 
@@ -7,6 +7,7 @@ export interface MenuItem {
 	text: string;
 	to?: string;
 	icon: NameIcon;
+	pack?: IconPack;
 	sub?: MenuItem[];
 }
 

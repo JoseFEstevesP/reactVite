@@ -149,7 +149,7 @@ export const Input = <T extends FieldValues = FieldValues>({
 							onClick={() => setShowCalendar(prev => !prev)}
 							aria-label="Select date"
 						>
-							<Icons iconName="date" size="1.2em" />
+							<Icons iconName="date" pack="reactVite" size="1.2em" />
 						</button>
 					)}
 					{isPasswordType && !disabled && (

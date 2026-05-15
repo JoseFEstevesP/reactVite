@@ -4,7 +4,6 @@ import type {
 	NotificationType,
 } from '@/api/notification/types';
 import { Button } from '@/components/button/Button';
-import { Icons } from '@/components/icon/Icons';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 
@@ -121,8 +120,8 @@ const NotificationBell = () => {
 				title="Notificaciones"
 				aria-label="Notificaciones"
 				aria-expanded={isOpen}
+				icon={{ iconName: 'bell' }}
 			>
-				<Icons iconName="bell" className={styles.bell__icon} />
 				{unreadCount > 0 && (
 					<span className={styles.bell__badge}>
 						{unreadCount > 99 ? '99+' : unreadCount}

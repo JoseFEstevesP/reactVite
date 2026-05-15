@@ -5,10 +5,11 @@ services:
       target: ${NODE_ENV:-development}
       args:
         - NODE_ENV=${NODE_ENV:-development}
-    container_name: adminProject_react_${NODE_ENV:-development}
+    container_name: reactVite_react_${NODE_ENV:-development}
     env_file:
       - .env
     environment:
+      - CI=true
       - VITE_API_URL=${VITE_API_URL}
       - NODE_ENV=${NODE_ENV:-development}
     network_mode: host

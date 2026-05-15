@@ -28,7 +28,7 @@ const MenuItemComponent = ({
 					onClick={() => setShow(!show)}
 					aria-expanded={show}
 				>
-					<Icons iconName={item.icon} className={styles.subMenu__icon} />
+					<Icons iconName={item.icon} pack={item.pack} className={styles.subMenu__icon} />
 					{expanded && (
 						<span className={styles.subMenu__text}>{item.text}</span>
 					)}
@@ -51,10 +51,11 @@ const MenuItemComponent = ({
 										`${styles.subMenu__link} ${isActive ? styles.subMenu__linkActive : ''}`
 									}
 								>
-									<Icons
-										iconName={subItem.icon}
-										className={styles.subMenu__iconSmall}
-									/>
+<Icons
+		iconName={subItem.icon}
+		pack={subItem.pack}
+		className={styles.subMenu__iconSmall}
+	/>
 									{expanded && subItem.text}
 								</NavLink>
 							) : (
@@ -76,7 +77,7 @@ const MenuItemComponent = ({
 				`${styles.menu__link} ${isActive ? styles.menu__linkActive : ''}`
 			}
 		>
-			<Icons iconName={item.icon} className={styles.menu__icon} />
+			<Icons iconName={item.icon} pack={item.pack} className={styles.menu__icon} />
 			{expanded && <span className={styles.menu__text}>{item.text}</span>}
 		</NavLink>
 	);

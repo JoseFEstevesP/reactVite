@@ -5,7 +5,8 @@ import type { IconParameter } from './types';
 const spriteCache = new Map<string, string>();
 
 const iconPack = {
-	icon: import('/assets/icons/defaultIcons-pack.svg'),
+	default: import('/assets/icons/defaultIcons-pack.svg'),
+	reactVite: import('/assets/icons/reactVite-pack.svg'),
 };
 
 async function loadSprite(type: string): Promise<string> {
@@ -21,6 +22,7 @@ async function loadSprite(type: string): Promise<string> {
 
 export const Icons = ({
 	iconName,
+	pack = 'default',
 	size,
 	fallback,
 	className,
@@ -34,7 +36,7 @@ export const Icons = ({
 		setLoading(true);
 		setError(false);
 
-		loadSprite('icon')
+		loadSprite(pack)
 			.then(url => {
 				setSpriteUrl(url);
 				setLoading(false);
@@ -43,7 +45,7 @@ export const Icons = ({
 				setError(true);
 				setLoading(false);
 			});
-	}, []);
+	}, [pack]);
 
 	const href = useMemo(() => {
 		if (!spriteUrl || !iconName) return '';

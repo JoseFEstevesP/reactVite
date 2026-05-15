@@ -1,5 +1,7 @@
 import type { ReactNode, SVGProps } from 'react';
 
+export type IconPack = 'default' | 'reactVite';
+
 export type NameIcon =
 	| 'add'
 	| 'arrow'
@@ -43,6 +45,7 @@ export type NameIcon =
 
 export interface IconParameter extends SVGProps<SVGSVGElement> {
 	iconName: NameIcon;
+	pack?: IconPack;
 	size?: string | number;
 	fallback?: ReactNode;
 }
