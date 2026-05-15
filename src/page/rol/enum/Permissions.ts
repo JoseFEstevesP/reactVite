@@ -13,6 +13,7 @@ const primaryPermissions = {
 	companyRequest: 'COMPANYREQUEST',
 	historyPayment: 'HISTORYPAYMENT',
 	notification: 'NOTIFICATION',
+	dashboard: 'DASHBOARD',
 };
 
 const permissions = {
@@ -99,6 +100,8 @@ const permissions = {
 	notificationServerConnected: `${primaryPermissions.notification}_SERVER_CONNECTED`,
 	notificationServerDisconnected: `${primaryPermissions.notification}_SERVER_DISCONNECTED`,
 	notificationSystemAlert: `${primaryPermissions.notification}_SYSTEM_ALERT`,
+	dashboard: primaryPermissions.dashboard,
+	dashboardRead: `${primaryPermissions.dashboard}_READ`,
 } as const;
 
 export const textPermission: Record<string, string> = {
@@ -164,13 +167,10 @@ export const textPermission: Record<string, string> = {
 		'Leer sistema de empresa específico',
 	[`${primaryPermissions.companySyste}_UPDATE`]:
 		'Actualizar sistema de empresa',
-	[`${primaryPermissions.companySyste}_DELETE`]:
-		'Eliminar sistema de empresa',
+	[`${primaryPermissions.companySyste}_DELETE`]: 'Eliminar sistema de empresa',
 	[permissions.companyRequest]: 'Solicitud de empresa',
-	[`${primaryPermissions.companyRequest}_ADD`]:
-		'Agregar solicitud de empresa',
-	[`${primaryPermissions.companyRequest}_READ`]:
-		'Leer solicitud de empresa',
+	[`${primaryPermissions.companyRequest}_ADD`]: 'Agregar solicitud de empresa',
+	[`${primaryPermissions.companyRequest}_READ`]: 'Leer solicitud de empresa',
 	[`${primaryPermissions.companyRequest}_READ_ONE`]:
 		'Leer solicitud de empresa específica',
 	[`${primaryPermissions.companyRequest}_UPDATE`]:
@@ -184,8 +184,7 @@ export const textPermission: Record<string, string> = {
 		'Leer historial de pago específico',
 	[`${primaryPermissions.historyPayment}_UPDATE`]:
 		'Actualizar historial de pago',
-	[`${primaryPermissions.historyPayment}_DELETE`]:
-		'Eliminar historial de pago',
+	[`${primaryPermissions.historyPayment}_DELETE`]: 'Eliminar historial de pago',
 	[permissions.notification]: 'Notificación',
 	[`${primaryPermissions.notification}_ADD`]: 'Agregar notificación',
 	[`${primaryPermissions.notification}_READ`]: 'Leer notificación',
@@ -203,8 +202,9 @@ export const textPermission: Record<string, string> = {
 		'Notificación de servidor conectado',
 	[`${primaryPermissions.notification}_SERVER_DISCONNECTED`]:
 		'Notificación de servidor desconectado',
-	[`${primaryPermissions.notification}_SYSTEM_ALERT`]:
-		'Alerta del sistema',
+	[`${primaryPermissions.notification}_SYSTEM_ALERT`]: 'Alerta del sistema',
+	[permissions.dashboard]: 'Dashboard',
+	[`${primaryPermissions.dashboard}_READ`]: 'Leer dashboard',
 };
 
 export { permissions as Permission };
