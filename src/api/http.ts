@@ -1,5 +1,6 @@
 import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type { ApiErrorResponse } from '@/globalTypes';
+import { useRolStore } from '@/stores/rolStore';
 import { routes } from './url';
 
 interface TokenExpiredResponse {
@@ -161,17 +162,21 @@ http.interceptors.response.use(
 	},
 );
 
-const handleUnauthorized = async (
+	const handleUnauthorized = async (
 	originalRequest: CustomAxiosRequestConfig,
 	customError: CustomAxiosError,
 ) => {
 	try {
 		const checkResponse = await httpInternal.get(routes.check);
 
+		const checkData = checkResponse.data?.data ?? {};
 		const isSessionActive =
-			checkResponse.data?.success && checkResponse.data?.data?.isAuthenticated;
+			checkResponse.data?.success && checkData.isAuthenticated;
 
 		if (isSessionActive) {
+			if (checkData.rol) {
+				useRolStore.getState().setEncryptedRol(checkData.rol);
+			}
 			originalRequest._retry = true;
 
 			try {
@@ -208,6 +213,7 @@ const handleUnauthorized = async (
 
 const handleSessionClosed = async () => {
 	sessionStorage.removeItem('miniToken');
+	useRolStore.getState().setEncryptedRol(null);
 	try {
 		await httpInternal.post(routes.logout, {});
 	} catch {

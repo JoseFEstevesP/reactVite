@@ -9,6 +9,7 @@ export interface MenuItem {
 	icon: NameIcon;
 	pack?: IconPack;
 	sub?: MenuItem[];
+	per?: string;
 }
 
 export interface MenuProps {

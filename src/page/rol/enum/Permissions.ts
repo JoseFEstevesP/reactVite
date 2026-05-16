@@ -14,6 +14,7 @@ const primaryPermissions = {
 	historyPayment: 'HISTORYPAYMENT',
 	notification: 'NOTIFICATION',
 	dashboard: 'DASHBOARD',
+	plan: 'PLAN',
 };
 
 const permissions = {
@@ -102,6 +103,12 @@ const permissions = {
 	notificationSystemAlert: `${primaryPermissions.notification}_SYSTEM_ALERT`,
 	dashboard: primaryPermissions.dashboard,
 	dashboardRead: `${primaryPermissions.dashboard}_READ`,
+	plan: primaryPermissions.plan,
+	planAdd: `${primaryPermissions.plan}_ADD`,
+	planRead: `${primaryPermissions.plan}_READ`,
+	planReadOne: `${primaryPermissions.plan}_READ_ONE`,
+	planUpdate: `${primaryPermissions.plan}_UPDATE`,
+	planDelete: `${primaryPermissions.plan}_DELETE`,
 } as const;
 
 export const textPermission: Record<string, string> = {
@@ -205,6 +212,12 @@ export const textPermission: Record<string, string> = {
 	[`${primaryPermissions.notification}_SYSTEM_ALERT`]: 'Alerta del sistema',
 	[permissions.dashboard]: 'Dashboard',
 	[`${primaryPermissions.dashboard}_READ`]: 'Leer dashboard',
+	[permissions.plan]: 'Plan',
+	[`${primaryPermissions.plan}_ADD`]: 'Agregar plan',
+	[`${primaryPermissions.plan}_READ`]: 'Leer plan',
+	[`${primaryPermissions.plan}_READ_ONE`]: 'Leer plan específico',
+	[`${primaryPermissions.plan}_UPDATE`]: 'Actualizar plan',
+	[`${primaryPermissions.plan}_DELETE`]: 'Eliminar plan',
 };
 
 export { permissions as Permission };

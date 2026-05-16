@@ -1,6 +1,7 @@
 import http from '@/api/http';
 import { routes } from '@/api/url';
 import type { ApiErrorResponse } from '@/globalTypes';
+import { useRolStore } from '@/stores/rolStore';
 import type { AxiosError } from 'axios';
 import { create } from 'zustand';
 import { toastError } from '@/hooks/useToast';
@@ -29,16 +30,24 @@ export const useAuthStore = create<AuthState>(set => ({
 		const storedToken = sessionStorage.getItem('miniToken');
 
 		if (storedToken) {
+			const storedRol = sessionStorage.getItem('encryptedRol');
+			if (storedRol) {
+				useRolStore.getState().setEncryptedRol(storedRol);
+			}
 			set({ token: storedToken, isInitialized: true });
 			return;
 		}
 
 		try {
 			const response = await http.get(routes.check);
+			const data = response.data?.data ?? {};
 			const isAuthenticated =
-				response.data.success && response.data.data?.isAuthenticated;
+				response.data.success && data.isAuthenticated;
 
 			if (isAuthenticated) {
+				if (data.rol) {
+					useRolStore.getState().setEncryptedRol(data.rol);
+				}
 				const newToken = crypto.randomUUID();
 				sessionStorage.setItem('miniToken', newToken);
 				set({ token: newToken, isInitialized: true });

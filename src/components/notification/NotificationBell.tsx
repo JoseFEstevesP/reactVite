@@ -5,6 +5,8 @@ import type {
 } from '@/api/notification/types';
 import { Button } from '@/components/button/Button';
 import Loader from '@/components/loader/Loader';
+import useValidate from '@/hooks/useValidate';
+import { Permission } from '@/page/rol/enum/Permissions';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 
@@ -76,14 +78,20 @@ const NotificationItem = ({
 };
 
 const NotificationBell = () => {
+	const { handleData } = useValidate();
 	const [isOpen, setIsOpen] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
-	const { data, isPending, isError, refetch, isRefetching } =
-		useNotifications();
+	const hasPermission = handleData({ per: Permission.notificationRead });
 	const markAsRead = useMarkAsRead();
+	const { data, isPending, isError, refetch, isRefetching } =
+		useNotifications({ enabled: hasPermission });
 
 	const notifications = data?.data ?? [];
 	const unreadCount = notifications.filter(n => n.readAt === null).length;
+
+	if (!hasPermission) {
+		return null;
+	}
 
 	const handleToggle = useCallback(() => {
 		setIsOpen(prev => !prev);

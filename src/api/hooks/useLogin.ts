@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/stores/authStore';
+import { useRolStore } from '@/stores/rolStore';
 import type { AxiosError } from 'axios';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,11 +11,12 @@ import { usePost } from './usePost';
 
 export function useLogin() {
 	const { setToken } = useAuthStore();
+	const { setEncryptedRol } = useRolStore();
 	const navigate = useNavigate();
 	const { handleSuccess, handleError } = useApiResponse();
 
 	const login = usePost<
-		ApiResponse<{ msg: string }>,
+		ApiResponse<{ msg: string; rol: string }>,
 		AxiosError<ApiErrorResponse>,
 		LoginDTOTypes
 	>(routes.login, {
@@ -22,6 +24,7 @@ export function useLogin() {
 		onSuccess: data => {
 			if (handleSuccess(data)) {
 				setToken(crypto.randomUUID());
+				setEncryptedRol(data.data.rol);
 				navigate('/');
 			}
 		},

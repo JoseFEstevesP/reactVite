@@ -4,6 +4,8 @@ import { routes } from '@/api/url';
 import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
 import { useApiResponse } from '@/hooks/useApiResponse';
 import { useToast } from '@/hooks/useToast';
+import useValidate from '@/hooks/useValidate';
+import { Permission } from '@/page/rol/enum/Permissions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { AxiosError } from 'axios';
 import { useState } from 'react';
@@ -20,6 +22,7 @@ import styles from './styles.module.scss';
 import type { ProfileApiResponse } from './types';
 
 const ProfilePage = () => {
+	const { handleData } = useValidate();
 	const { success } = useToast();
 	const { handleError } = useApiResponse();
 
@@ -27,7 +30,7 @@ const ProfilePage = () => {
 
 	const { data, isLoading, refetch } = useGet<ProfileApiResponse>(
 		routes.user.profile,
-		{ enabled: true },
+		{ enabled: handleData({ per: Permission.userProfile }) },
 	);
 
 	const profile = data?.data;
@@ -152,9 +155,8 @@ const ProfilePage = () => {
 
 	return (
 		<section className={styles.profilePage}>
-			{profile && (
-				<>
-					<div className={styles.profilePage__header}>
+			{handleData({ per: Permission.userProfile }) && profile && <>
+				<div className={styles.profilePage__header}>
 						<div className={styles.profilePage__avatar}>
 							<span className={styles.profilePage__initials}>
 								{initials}
@@ -408,7 +410,7 @@ const ProfilePage = () => {
 						</form>
 					</div>
 				</>
-			)}
+			}
 		</section>
 	);
 };

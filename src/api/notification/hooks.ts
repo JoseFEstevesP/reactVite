@@ -4,7 +4,7 @@ import http from '@/api/http';
 import type { ApiResponse } from '@/api/types';
 import type { NotificationResponse } from './types';
 
-export function useNotifications() {
+export function useNotifications(options?: { enabled?: boolean }) {
 	return useQuery<ApiResponse<NotificationResponse[]>>({
 		queryKey: ['notifications'],
 		queryFn: async () => {
@@ -15,6 +15,7 @@ export function useNotifications() {
 		},
 		refetchInterval: 1000 * 60 * 60,
 		staleTime: 1000 * 60 * 5,
+		...(options?.enabled !== undefined && { enabled: options.enabled }),
 	});
 }
 
