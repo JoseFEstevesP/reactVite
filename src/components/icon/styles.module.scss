@@ -5,3 +5,10 @@
 	height: var(--size);
 	flex-shrink: 0;
 }
+
+.fallback {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #dc3545;
+}
