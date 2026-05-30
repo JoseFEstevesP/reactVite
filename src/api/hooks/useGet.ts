@@ -1,4 +1,3 @@
-import { toastError } from '@/stores/toastStore';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import http from '../http';
@@ -14,6 +13,7 @@ interface UseGetOptions {
 	retryDelay?: number;
 	refetchOnWindowFocus?: boolean;
 	refetchOnMount?: boolean;
+	onError?: (message: string) => void;
 }
 
 export function useGet<TData>(url: string, options: UseGetOptions = {}) {
@@ -27,6 +27,7 @@ export function useGet<TData>(url: string, options: UseGetOptions = {}) {
 		retryDelay,
 		refetchOnWindowFocus = false,
 		refetchOnMount = false,
+		onError,
 	} = options;
 
 	const result = useQuery<TData>({
@@ -45,17 +46,11 @@ export function useGet<TData>(url: string, options: UseGetOptions = {}) {
 	});
 
 	useEffect(() => {
-		if (result.isError) {
-			const errorWithMessage = result.error as Error & {
-				_customMessage?: string;
-			};
-			const errorMessage =
-				errorWithMessage._customMessage ||
-				result.error.message ||
-				'Error en la solicitud';
-			toastError(errorMessage);
+		if (result.isError && onError) {
+			const err = result.error as Error & { _customMessage?: string };
+			onError(err._customMessage || err.message || 'Error en la solicitud');
 		}
-	}, [result.isError, result.error]);
+	}, [result.isError, result.error, onError]);
 
 	return {
 		data: result.data,
