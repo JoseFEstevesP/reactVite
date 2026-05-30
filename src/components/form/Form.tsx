@@ -62,7 +62,7 @@ type FormCurrencyField = {
 	disabled?: boolean;
 };
 
-type FormField =
+export type FormField =
 	| FormInputField
 	| FormSelectField
 	| FormSelectMultipleField
