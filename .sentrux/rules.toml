@@ -1,0 +1,85 @@
+[constraints]
+max_cycles = 0
+max_coupling = "B"
+max_cc = 35
+no_god_files = false
+
+# Application layers — all at same order (0) so they can freely inter-depend
+# Boundaries below enforce specific restrictions
+[[layers]]
+name = "hooks"
+paths = ["src/hooks/**"]
+order = 0
+
+[[layers]]
+name = "stores"
+paths = ["src/stores/**"]
+order = 0
+
+[[layers]]
+name = "api"
+paths = ["src/api/**"]
+order = 0
+
+[[layers]]
+name = "components"
+paths = ["src/components/**"]
+order = 0
+
+[[layers]]
+name = "layout"
+paths = ["src/layout/**"]
+order = 0
+
+[[layers]]
+name = "pages"
+paths = ["src/page/**"]
+order = 0
+
+[[layers]]
+name = "providers"
+paths = ["src/providers/**"]
+order = 0
+
+# Foundational — higher order (1) means they can't import application layers (order 0)
+# But app layers can import foundational freely
+[[layers]]
+name = "styles"
+paths = ["src/styles/**"]
+order = 1
+
+[[layers]]
+name = "enums"
+paths = ["src/enums/**"]
+order = 1
+
+[[layers]]
+name = "utils"
+paths = ["src/{functions,utils}/**"]
+order = 1
+
+[[layers]]
+name = "types"
+paths = ["src/{globalTypes,globalOptions,msg}.ts"]
+order = 1
+
+# Regla 1: Componentes NO pueden importar Páginas
+# Los componentes de UI compartidos no deben depender de páginas específicas.
+[[boundaries]]
+from = "src/components/**"
+to = "src/page/**"
+reason = "Componentes de UI no deben depender de páginas. Extrae la dependencia a shared/, enums/ o globalTypes/."
+
+# (Regla 2 eliminada: useRenderInputs es un hook legítimo que compone UI, patrón válido en React)
+
+# Regla 3: Utils/Functions NO pueden importar archivos con JSX (.tsx)
+[[boundaries]]
+from = "src/{functions,utils}/**"
+to = "src/**/*.tsx"
+reason = "Archivos de utilidades no deben importar JSX. Usa extensión .ts para lógica pura."
+
+# Regla 4: API layer no debe depender de UI
+[[boundaries]]
+from = "src/api/**"
+to = "src/{components,page,layout}/**"
+reason = "La capa API no debe depender de UI. Separa responsabilidades."

@@ -9,13 +9,17 @@ pnpm run lint       # oxlint (NOT eslint)
 pnpm run lint:fix   # oxlint --fix
 pnpm run format     # prettier --write src/**/*.{ts,tsx,css}
 pnpm run preview    # vite preview
+pnpm test           # vitest (watch mode)
+pnpm test:run       # vitest run (single pass)
+pnpm test:coverage  # vitest run --coverage
 ```
 
 ## Tech Stack
 
 - **Vite 8** + **React 19** + **TypeScript ~6.0.3** (NOT TS 5.x)
 - **React Compiler** via `@rolldown/plugin-babel` + `babel-plugin-react-compiler`
-- **oxlint** (lint) | **Prettier** (format) | **Sass** (styles)
+- **Biome** (lint+format) | **oxlint** (lint) | **Prettier** (format) | **Sass** (styles)
+- **Vitest** + **@testing-library/react** (unit tests) | **jsdom** (DOM env)
 - **react-router-dom v7** | **Zustand** (state) | **TanStack Query v5** (server state)
 - **react-hook-form** + **Zod v4** (forms/validation) | **axios** (HTTP) | **@formkit/tempo** (dates)
 
@@ -26,6 +30,8 @@ pnpm run preview    # vite preview
 - `tsconfig.node.json`: Only covers `vite.config.ts`
 - `tsconfig.json`: References only (no root config)
 - `oxlintrc.json`: Custom rules — `no-console: warn`, `no-debugger: error`, `no-unused-vars: error`
+- `biome.json`: Strict rules (correctness, style, complexity, performance, security, a11y, suspicious)
+- `vitest.config.ts`: jsdom env, path aliases, coverage thresholds (80%), setup at `src/test/setup.ts`
 - `.lintstagedrc`: `oxlint --fix` + `prettier --write` on `*.{ts,tsx}`; `prettier --write` on `*.{css,json,md}`
 - Pre-commit hook (husky) runs lint-staged on staged files
 
@@ -53,5 +59,5 @@ pnpm run preview    # vite preview
 
 - `.ts`/`.tsx` files: `verbatimModuleSyntax` (`import type` for type-only imports), `erasableSyntaxOnly` (no enums, no namespaces, no parameter properties).
 - Zod v4 syntax differs from v3 — do NOT use Zod v3 APIs.
-- No test framework installed (no vitest, no testing-library). Do not assume tests exist.
+- **Vitest** tests in `src/**/*.{test,spec}.{ts,tsx}`. Setup at `src/test/setup.ts`.
 - No GitHub CI (no `.github/` directory).
