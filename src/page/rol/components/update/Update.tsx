@@ -1,15 +1,14 @@
-import { useGet } from '@/api/hooks/useGet';
-import { usePut } from '@/api/hooks/usePut';
-import { routes } from '@/api/url';
-import Form from '@/components/form/Form';
-import { statusOptions } from '@/globalOptions';
-import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
-import { useApiResponse } from '@/hooks/useApiResponse';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useGet } from '@/api/hooks/useGet';
+import { routes } from '@/api/url';
+import CrudForm from '@/components/crud/CrudForm';
+import { useFormSubmit } from '@/hooks/useFormSubmit';
+import { useToast } from '@/hooks/useToast';
+import { statusOptions } from '@/globalOptions';
+import type { ApiResponse } from '@/globalTypes';
 import {
 	RolUpdateFormSchema,
 	type RolDTOTypes,
@@ -17,7 +16,6 @@ import {
 	type RolUpdateFormTypes,
 } from '../../dto/RolDTO';
 import { permissionOptions } from '../../options';
-import styles from '../styles/styles.module.scss';
 
 const Update = () => {
 	const { uid } = useParams();
@@ -29,9 +27,11 @@ const Update = () => {
 		}
 	}, [uid, navigate]);
 
+	const { error: toastError } = useToast();
 	const { data, isLoading } = useGet<ApiResponse<RolDTOTypes>>(
 		routes.rol.one.replace(':uid', uid || ''),
 		{
+			onError: toastError,
 			queryKey: ['rol', uid || ''],
 			enabled: !!uid,
 			staleTime: 0,
@@ -61,12 +61,12 @@ const Update = () => {
 		}
 	}, [data, setValue]);
 
-	const { handleSuccess, handleError } = useApiResponse();
-	const { mutate: handlePut } = usePut<
-		ApiResponse<{ msg: string }>,
-		AxiosError<ApiErrorResponse>,
-		RolUpdateDTOTypes
-	>(routes.rol.base, { queryKey: ['roles'] });
+	const { submit } = useFormSubmit<RolUpdateDTOTypes>({
+		url: routes.rol.base,
+		method: 'patch',
+		queryKey: ['roles'],
+		navigateTo: '/rol',
+	});
 
 	const onSubmit = (formData: RolUpdateFormTypes) => {
 		const payload: RolUpdateDTOTypes = {
@@ -76,17 +76,11 @@ const Update = () => {
 			permissions: formData.permissions,
 			status: formData.status === 'true',
 		};
-		handlePut(payload, {
-			onSuccess: res => {
-				handleSuccess(res);
-				navigate('/rol');
-			},
-			onError: err => {
-				handleError(err, (field, message) => {
-					setFormError(field as keyof RolUpdateFormTypes, {
-						type: 'server',
-						message,
-					});
+		submit(payload, {
+			onError: (field, message) => {
+				setFormError(field as keyof RolUpdateFormTypes, {
+					type: 'server',
+					message,
 				});
 			},
 		});
@@ -126,17 +120,15 @@ const Update = () => {
 	];
 
 	return (
-		<section className={styles.form}>
-			<Form
-				title="Actualizar Rol"
-				onSubmit={handleSubmit(onSubmit) as never}
-				register={register}
-				errors={errors}
-				control={control}
-				renderOptions={renderOptions}
-				size="sm"
-			/>
-		</section>
+		<CrudForm
+			title="Actualizar Rol"
+			onSubmit={handleSubmit(onSubmit) as never}
+			register={register}
+			errors={errors}
+			control={control}
+			renderOptions={renderOptions}
+			size="sm"
+		/>
 	);
 };
 

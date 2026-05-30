@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useDelete } from '@/api/hooks/useDelete';
+import { useApiMutation } from '@/api/hooks/useApiMutation';
 import { useGet } from '@/api/hooks/useGet';
 import { routes } from '@/api/url';
 import type { ApiResponse, ApiErrorResponse } from '@/globalTypes';
@@ -14,9 +14,9 @@ import Search from '@/components/search/Search';
 import Table from '@/components/table/Table';
 import { useToast } from '@/hooks/useToast';
 import useValidate from '@/hooks/useValidate';
-import { Permission } from '@/page/rol/enum/Permissions';
+import { Permission } from '@/enums/permissions';
 import type { AxiosError } from 'axios';
-import ModalDelete from './components/modalDelete/ModalDelete';
+import ModalDelete from '@/components/modalDelete/ModalDelete';
 import { OrderAuditProperty, textOrderAudit } from './enum/Order';
 import styles from './styles.module.scss';
 import type { Audit, AuditsApiResponse } from './types';
@@ -27,19 +27,21 @@ const AuditPage = () => {
 	const { handleError: handleApiError } = useApiResponse();
 	const { handleFilterData, handleResetData, filter, handlePagination } =
 		useFilter({ orderProperty: OrderAuditProperty.names });
-	const { mutate: deleteAudit, isPending: isDeleting } = useDelete<
+	const { mutate: deleteAudit, isPending: isDeleting } = useApiMutation<
 		ApiResponse<{ msg: string }>,
 		AxiosError<ApiErrorResponse>
-	>(routes.audit.delete);
+	>(routes.audit.delete, 'delete');
 	const [selectedUid, setSelectedUid] = useState<string>('');
 	const [auditUserName, setAuditUserName] = useState<string>('');
 	const { isOpen, handleClose, handleOpen } = useModal();
 
 	const pageNumber = filter.page || 1;
 
+	const { error: toastError } = useToast();
 	const { data, isFetching, isPending, refetch } = useGet<AuditsApiResponse>(
 		routes.audit.base,
 		{
+			onError: toastError,
 			config: {
 				params: {
 					page: String(pageNumber),
@@ -122,7 +124,8 @@ const AuditPage = () => {
 				<ModalDelete
 					isOpen={isOpen}
 					handleClose={handleClose}
-					userName={auditUserName}
+					itemName={auditUserName}
+					itemLabel="registro de auditoría"
 					selectedUid={selectedUid}
 					isDeleting={isDeleting}
 					handleDelete={() => {

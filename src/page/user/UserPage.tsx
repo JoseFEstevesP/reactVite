@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useDelete } from '@/api/hooks/useDelete';
+import { useApiMutation } from '@/api/hooks/useApiMutation';
 import { useGet } from '@/api/hooks/useGet';
 import { routes } from '@/api/url';
 import { Button } from '@/components/button/Button';
@@ -16,9 +16,9 @@ import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
 import { useApiResponse } from '@/hooks/useApiResponse';
 import { useToast } from '@/hooks/useToast';
 import useValidate from '@/hooks/useValidate';
-import { Permission } from '@/page/rol/enum/Permissions';
+import { Permission } from '@/enums/permissions';
 import type { AxiosError } from 'axios';
-import ModalDelete from './components/modalDelete/ModalDelete';
+import ModalDelete from '@/components/modalDelete/ModalDelete';
 import { OrderUserProperty, textOrderUser } from './enum/Order';
 import styles from './styles.module.scss';
 import type { User, UsersApiResponse } from './types';
@@ -29,19 +29,21 @@ const UserPage = () => {
 	const { handleError: handleApiError } = useApiResponse();
 	const { handleFilterData, handleResetData, filter, handlePagination } =
 		useFilter({ orderProperty: OrderUserProperty.email });
-	const { mutate: deleteUser, isPending: isDeleting } = useDelete<
+	const { mutate: deleteUser, isPending: isDeleting } = useApiMutation<
 		ApiResponse<{ msg: string }>,
 		AxiosError<ApiErrorResponse>
-	>(routes.user.delete);
+	>(routes.user.delete, 'delete');
 	const [selectedUid, setSelectedUid] = useState<string>('');
 	const [userName, setUserName] = useState<string>('');
 	const { isOpen, handleClose, handleOpen } = useModal();
 
 	const pageNumber = filter.page || 1;
 
+	const { error: toastError } = useToast();
 	const { data, isFetching, isPending, refetch } = useGet<UsersApiResponse>(
 		routes.user.base,
 		{
+			onError: toastError,
 			config: {
 				params: {
 					page: String(pageNumber),
@@ -131,7 +133,8 @@ const UserPage = () => {
 				<ModalDelete
 					isOpen={isOpen}
 					handleClose={handleClose}
-					userName={userName}
+					itemName={userName}
+					itemLabel="usuario"
 					selectedUid={selectedUid}
 					isDeleting={isDeleting}
 					handleDelete={() => {

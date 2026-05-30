@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useDelete } from '@/api/hooks/useDelete';
+import { useApiMutation } from '@/api/hooks/useApiMutation';
 import { useGet } from '@/api/hooks/useGet';
 import { routes } from '@/api/url';
 import { Button } from '@/components/button/Button';
@@ -17,11 +17,11 @@ import { useApiResponse } from '@/hooks/useApiResponse';
 import { useToast } from '@/hooks/useToast';
 import useValidate from '@/hooks/useValidate';
 import type { AxiosError } from 'axios';
-import ModalDelete from './components/modalDelete/ModalDelete';
+import ModalDelete from '@/components/modalDelete/ModalDelete';
+import { Permission, textPermission } from '@/enums/permissions';
 import { OrderRolProperty, textOrderRol } from './enum/Order';
-import { Permission, textPermission } from './enum/Permissions';
 import styles from './styles.module.scss';
-import type { Role, RolesApiResponse } from './types';
+import type { Role, RolesApiResponse } from '@/globalTypes';
 
 const RolPage = () => {
 	const { handleData } = useValidate();
@@ -29,19 +29,21 @@ const RolPage = () => {
 	const { handleError: handleApiError } = useApiResponse();
 	const { handleFilterData, handleResetData, filter, handlePagination } =
 		useFilter({ orderProperty: OrderRolProperty.name });
-	const { mutate: deleteRole, isPending: isDeleting } = useDelete<
+	const { mutate: deleteRole, isPending: isDeleting } = useApiMutation<
 		ApiResponse<{ msg: string }>,
 		AxiosError<ApiErrorResponse>
-	>(routes.rol.delete);
+	>(routes.rol.delete, 'delete');
 	const [selectedUid, setSelectedUid] = useState<string>('');
 	const [rolName, setRolName] = useState<string>('');
 	const { isOpen, handleClose, handleOpen } = useModal();
 
 	const pageNumber = filter.page || 1;
 
+	const { error: toastError } = useToast();
 	const { data, isFetching, isPending, refetch } = useGet<RolesApiResponse>(
 		routes.rol.base,
 		{
+			onError: toastError,
 			config: {
 				params: {
 					page: String(pageNumber),
@@ -127,7 +129,8 @@ const RolPage = () => {
 				<ModalDelete
 					isOpen={isOpen}
 					handleClose={handleClose}
-					rolName={rolName}
+					itemName={rolName}
+					itemLabel="rol"
 					selectedUid={selectedUid}
 					isDeleting={isDeleting}
 					handleDelete={() => {

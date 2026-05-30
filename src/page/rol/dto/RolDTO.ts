@@ -1,5 +1,5 @@
 import z from 'zod';
-import { Permission } from '../enum/Permissions';
+import { Permission } from '@/enums/permissions';
 import { msg } from '../msg';
 
 const PermissionEnum = z.enum(Permission);

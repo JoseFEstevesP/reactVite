@@ -1,11 +1,11 @@
 import { useGet } from '@/api/hooks/useGet';
-import { usePut } from '@/api/hooks/usePut';
+import { useApiMutation } from '@/api/hooks/useApiMutation';
 import { routes } from '@/api/url';
 import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
 import { useApiResponse } from '@/hooks/useApiResponse';
 import { useToast } from '@/hooks/useToast';
 import useValidate from '@/hooks/useValidate';
-import { Permission } from '@/page/rol/enum/Permissions';
+import { Permission } from '@/enums/permissions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { AxiosError } from 'axios';
 import { useState } from 'react';
@@ -28,9 +28,13 @@ const ProfilePage = () => {
 
 	const [showEmailForm, setShowEmailForm] = useState(false);
 
+	const { error: toastError } = useToast();
 	const { data, isLoading, refetch } = useGet<ProfileApiResponse>(
 		routes.user.profile,
-		{ enabled: handleData({ per: Permission.userProfile }) },
+		{
+			onError: toastError,
+			enabled: handleData({ per: Permission.userProfile }),
+		},
 	);
 
 	const profile = data?.data;
@@ -64,23 +68,23 @@ const ProfilePage = () => {
 		resolver: zodResolver(ProfilePasswordUpdateSchema) as never,
 	});
 
-	const { mutate: updateData } = usePut<
+	const { mutate: updateData } = useApiMutation<
 		ApiResponse<{ msg: string }>,
 		AxiosError<ApiErrorResponse>,
 		ProfileDataUpdateTypes
-	>(routes.user.profileData, { queryKey: ['profile'] });
+	>(routes.user.profileData, 'patch', { queryKey: ['profile'] });
 
-	const { mutate: updateEmail } = usePut<
+	const { mutate: updateEmail } = useApiMutation<
 		ApiResponse<{ msg: string }>,
 		AxiosError<ApiErrorResponse>,
 		ProfileEmailUpdateTypes
-	>(routes.user.profileEmail, { queryKey: ['profile'] });
+	>(routes.user.profileEmail, 'patch', { queryKey: ['profile'] });
 
-	const { mutate: updatePassword } = usePut<
+	const { mutate: updatePassword } = useApiMutation<
 		ApiResponse<{ msg: string }>,
 		AxiosError<ApiErrorResponse>,
 		ProfilePasswordUpdateTypes
-	>(routes.user.profilePassword, { queryKey: ['profile'] });
+	>(routes.user.profilePassword, 'patch', { queryKey: ['profile'] });
 
 	const onDataSubmit = (formData: ProfileDataUpdateTypes) => {
 		updateData(formData, {

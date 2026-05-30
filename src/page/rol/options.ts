@@ -1,4 +1,4 @@
-import { Permission, textPermission } from './enum/Permissions';
+import { Permission, textPermission } from '@/enums/permissions';
 
 export const permissionOptions = Object.values(Permission).map(perm => ({
 	value: perm,

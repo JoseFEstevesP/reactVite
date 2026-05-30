@@ -1,24 +1,16 @@
-import { usePost } from '@/api/hooks/usePost';
-import { routes } from '@/api/url';
-import Form from '@/components/form/Form';
-import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
-import { useApiResponse } from '@/hooks/useApiResponse';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { routes } from '@/api/url';
+import CrudForm from '@/components/crud/CrudForm';
+import { useFormSubmit } from '@/hooks/useFormSubmit';
 import {
 	RolRegisterDTOSchema,
 	type RolRegisterDTOTypes,
 	type RolUpdateFormTypes,
 } from '../../dto/RolDTO';
 import { permissionOptions } from '../../options';
-import styles from '../styles/styles.module.scss';
 
 const Register = () => {
-	const navigate = useNavigate();
-	const { handleSuccess, handleError } = useApiResponse();
-
 	const {
 		register,
 		control,
@@ -29,11 +21,12 @@ const Register = () => {
 		resolver: zodResolver(RolRegisterDTOSchema) as never,
 	});
 
-	const { mutate: handlePost } = usePost<
-		ApiResponse<{ msg: string }>,
-		AxiosError<ApiErrorResponse>,
-		RolRegisterDTOTypes
-	>(routes.rol.base, { queryKey: ['roles'] });
+	const { submit } = useFormSubmit<RolRegisterDTOTypes>({
+		url: routes.rol.base,
+		method: 'post',
+		queryKey: ['roles'],
+		navigateTo: '/rol',
+	});
 
 	const onSubmit = (data: RolUpdateFormTypes) => {
 		if (!data.permissions || data.permissions.length === 0) {
@@ -44,17 +37,11 @@ const Register = () => {
 			description: data.description,
 			permissions: data.permissions,
 		};
-		handlePost(payload, {
-			onSuccess: res => {
-				handleSuccess(res);
-				navigate('/rol');
-			},
-			onError: err => {
-				handleError(err, (field, message) => {
-					setFormError(field as keyof RolUpdateFormTypes, {
-						type: 'server',
-						message,
-					});
+		submit(payload, {
+			onError: (field, message) => {
+				setFormError(field as keyof RolUpdateFormTypes, {
+					type: 'server',
+					message,
 				});
 			},
 		});
@@ -83,17 +70,15 @@ const Register = () => {
 	];
 
 	return (
-		<section className={styles.form}>
-			<Form
-				title="Registrar Rol"
-				onSubmit={handleSubmit(onSubmit) as never}
-				register={register}
-				errors={errors}
-				control={control}
-				renderOptions={renderOptions}
-				size="sm"
-			/>
-		</section>
+		<CrudForm
+			title="Registrar Rol"
+			onSubmit={handleSubmit(onSubmit) as never}
+			register={register}
+			errors={errors}
+			control={control}
+			renderOptions={renderOptions}
+			size="sm"
+		/>
 	);
 };
 

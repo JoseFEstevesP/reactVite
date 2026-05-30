@@ -1,24 +1,19 @@
-import { useGet } from '@/api/hooks/useGet';
-import { usePost } from '@/api/hooks/usePost';
-import { routes } from '@/api/url';
-import Form from '@/components/form/Form';
-import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
-import { useApiResponse } from '@/hooks/useApiResponse';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import type { Role, RolesApiResponse } from '../../../rol/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useGet } from '@/api/hooks/useGet';
+import { routes } from '@/api/url';
+import CrudForm from '@/components/crud/CrudForm';
+import { useFormSubmit } from '@/hooks/useFormSubmit';
+import { useToast } from '@/hooks/useToast';
+import type { Role, RolesApiResponse } from '@/globalTypes';
 import {
 	UserRegisterDTOSchema,
 	type UserRegisterDTOTypes,
 	type UserUpdateFormTypes,
 } from '../../dto/UserDTO';
-import styles from '../styles/styles.module.scss';
 
 const Register = () => {
-	const navigate = useNavigate();
-	const { handleSuccess, handleError } = useApiResponse();
+	const { error: toastError } = useToast();
 
 	const {
 		register,
@@ -30,18 +25,19 @@ const Register = () => {
 		resolver: zodResolver(UserRegisterDTOSchema) as never,
 	});
 
-	const { mutate: handlePost } = usePost<
-		ApiResponse<{ msg: string }>,
-		AxiosError<ApiErrorResponse>,
-		UserRegisterDTOTypes
-	>(routes.user.create);
+	const { submit } = useFormSubmit<UserRegisterDTOTypes>({
+		url: routes.user.create,
+		method: 'post',
+		navigateTo: '/users',
+	});
 
-	const { data } = useGet<RolesApiResponse>(routes.rol.base, {
+	const { data: rolesData } = useGet<RolesApiResponse>(routes.rol.base, {
+		onError: toastError,
 		enabled: true,
 	});
 
 	const roleOptions =
-		data?.data?.rows.map((rol: Role) => ({
+		rolesData?.data?.rows.map((rol: Role) => ({
 			value: rol.uid,
 			label: rol.name,
 		})) || [];
@@ -57,82 +53,35 @@ const Register = () => {
 				.confirmPassword as string,
 			uidRol: data.uidRol,
 		};
-		handlePost(payload, {
-			onSuccess: res => {
-				handleSuccess(res);
-				navigate('/users');
-			},
-			onError: err => {
-				handleError(err, (field, message) => {
-					setFormError(field as keyof UserUpdateFormTypes, {
-						type: 'server',
-						message,
-					});
+		submit(payload, {
+			onError: (field, message) => {
+				setFormError(field as keyof UserUpdateFormTypes, {
+					type: 'server',
+					message,
 				});
 			},
 		});
 	};
 
 	const renderOptions = [
-		{
-			type: 'input' as const,
-			name: 'names',
-			placeholder: 'Nombres',
-			label: 'Nombres',
-		},
-		{
-			type: 'input' as const,
-			name: 'surnames',
-			placeholder: 'Apellidos',
-			label: 'Apellidos',
-		},
-		{
-			type: 'input' as const,
-			name: 'phone',
-			placeholder: 'Teléfono',
-			label: 'Teléfono',
-		},
-		{
-			type: 'input' as const,
-			name: 'email',
-			placeholder: 'Correo',
-			label: 'Correo',
-			inputType: 'email' as const,
-		},
-		{
-			type: 'input' as const,
-			name: 'password',
-			placeholder: 'Contraseña',
-			label: 'Contraseña',
-			inputType: 'password' as const,
-		},
-		{
-			type: 'input' as const,
-			name: 'confirmPassword',
-			placeholder: 'Confirmar contraseña',
-			label: 'Confirmar contraseña',
-			inputType: 'password' as const,
-		},
-		{
-			type: 'select' as const,
-			name: 'uidRol',
-			placeholder: 'Seleccionar rol',
-			label: 'Rol',
-			options: roleOptions,
-		},
+		{ type: 'input' as const, name: 'names', placeholder: 'Nombres', label: 'Nombres' },
+		{ type: 'input' as const, name: 'surnames', placeholder: 'Apellidos', label: 'Apellidos' },
+		{ type: 'input' as const, name: 'phone', placeholder: 'Teléfono', label: 'Teléfono' },
+		{ type: 'input' as const, name: 'email', placeholder: 'Correo', label: 'Correo', inputType: 'email' as const },
+		{ type: 'input' as const, name: 'password', placeholder: 'Contraseña', label: 'Contraseña', inputType: 'password' as const },
+		{ type: 'input' as const, name: 'confirmPassword', placeholder: 'Confirmar contraseña', label: 'Confirmar contraseña', inputType: 'password' as const },
+		{ type: 'select' as const, name: 'uidRol', placeholder: 'Seleccionar rol', label: 'Rol', options: roleOptions },
 	];
 
 	return (
-		<section className={styles.form}>
-			<Form
-				title="Registrar Usuario"
-				onSubmit={handleSubmit(onSubmit) as never}
-				register={register}
-				errors={errors}
-				control={control}
-				renderOptions={renderOptions}
-			/>
-		</section>
+		<CrudForm
+			title="Registrar Usuario"
+			onSubmit={handleSubmit(onSubmit) as never}
+			register={register}
+			errors={errors}
+			control={control}
+			renderOptions={renderOptions}
+		/>
 	);
 };
 

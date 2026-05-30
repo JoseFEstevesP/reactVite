@@ -1,23 +1,20 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGet } from '@/api/hooks/useGet';
-import { usePut } from '@/api/hooks/usePut';
-import { routes } from '@/api/url';
-import Form from '@/components/form/Form';
-import type { ApiErrorResponse, ApiResponse } from '@/globalTypes';
-import { useApiResponse } from '@/hooks/useApiResponse';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useGet } from '@/api/hooks/useGet';
+import { routes } from '@/api/url';
+import CrudForm from '@/components/crud/CrudForm';
+import { useFormSubmit } from '@/hooks/useFormSubmit';
+import { useToast } from '@/hooks/useToast';
+import type { ApiResponse, Role, RolesApiResponse } from '@/globalTypes';
 import {
 	UserUpdateFormSchema,
 	type UserDTOTypes,
 	type UserUpdateDTOTypes,
 	type UserUpdateFormTypes,
 } from '../../dto/UserDTO';
-import type { Role, RolesApiResponse } from '../../../rol/types';
 import { accountStatusOptions, statusUserOptions } from '../../options';
-import styles from '../styles/styles.module.scss';
 
 const Update = () => {
 	const { uid } = useParams();
@@ -29,9 +26,11 @@ const Update = () => {
 		}
 	}, [uid, navigate]);
 
+	const { error: toastError } = useToast();
 	const { data, isLoading } = useGet<ApiResponse<UserDTOTypes>>(
 		routes.user.one.replace(':uid', uid || ''),
 		{
+			onError: toastError,
 			enabled: !!uid,
 			staleTime: 0,
 			gcTime: 0,
@@ -59,14 +58,12 @@ const Update = () => {
 			setValue('email', data.data.email);
 			setValue('uidRol', data.data.uidRol);
 			setValue('status', data.data.status ? 'true' : 'false');
-			setValue(
-				'activatedAccount',
-				data.data.activatedAccount ? 'true' : 'false',
-			);
+			setValue('activatedAccount', data.data.activatedAccount ? 'true' : 'false');
 		}
 	}, [data, setValue]);
 
 	const { data: rolesData } = useGet<RolesApiResponse>(routes.rol.base, {
+		onError: toastError,
 		enabled: true,
 	});
 
@@ -76,12 +73,12 @@ const Update = () => {
 			label: rol.name,
 		})) || [];
 
-	const { handleSuccess, handleError } = useApiResponse();
-	const { mutate: handlePut } = usePut<
-		ApiResponse<{ msg: string }>,
-		AxiosError<ApiErrorResponse>,
-		UserUpdateDTOTypes
-	>(routes.user.base, { queryKey: ['users'] });
+	const { submit } = useFormSubmit<UserUpdateDTOTypes>({
+		url: routes.user.base,
+		method: 'patch',
+		queryKey: ['users'],
+		navigateTo: '/users',
+	});
 
 	const onSubmit = (formData: UserUpdateFormTypes) => {
 		const payload: UserUpdateDTOTypes = {
@@ -94,17 +91,11 @@ const Update = () => {
 			status: formData.status === 'true',
 			activatedAccount: formData.activatedAccount === 'true',
 		};
-		handlePut(payload, {
-			onSuccess: res => {
-				handleSuccess(res);
-				navigate('/users');
-			},
-			onError: err => {
-				handleError(err, (field, message) => {
-					setFormError(field as keyof UserUpdateFormTypes, {
-						type: 'server',
-						message,
-					});
+		submit(payload, {
+			onError: (field, message) => {
+				setFormError(field as keyof UserUpdateFormTypes, {
+					type: 'server',
+					message,
 				});
 			},
 		});
@@ -115,65 +106,24 @@ const Update = () => {
 	}
 
 	const renderOptions = [
-		{
-			type: 'input' as const,
-			name: 'names',
-			placeholder: 'Nombres',
-			label: 'Nombres',
-		},
-		{
-			type: 'input' as const,
-			name: 'surnames',
-			placeholder: 'Apellidos',
-			label: 'Apellidos',
-		},
-		{
-			type: 'input' as const,
-			name: 'phone',
-			placeholder: 'Teléfono',
-			label: 'Teléfono',
-		},
-		{
-			type: 'input' as const,
-			name: 'email',
-			placeholder: 'Correo',
-			label: 'Correo',
-			inputType: 'email' as const,
-		},
-		{
-			type: 'select' as const,
-			name: 'uidRol',
-			placeholder: 'Seleccionar rol',
-			label: 'Rol',
-			options: roleOptions,
-		},
-		{
-			type: 'select' as const,
-			name: 'status',
-			placeholder: 'Seleccionar estado',
-			label: 'Estado',
-			options: statusUserOptions,
-		},
-		{
-			type: 'select' as const,
-			name: 'activatedAccount',
-			placeholder: 'Cuenta activada',
-			label: 'Cuenta activada',
-			options: accountStatusOptions,
-		},
+		{ type: 'input' as const, name: 'names', placeholder: 'Nombres', label: 'Nombres' },
+		{ type: 'input' as const, name: 'surnames', placeholder: 'Apellidos', label: 'Apellidos' },
+		{ type: 'input' as const, name: 'phone', placeholder: 'Teléfono', label: 'Teléfono' },
+		{ type: 'input' as const, name: 'email', placeholder: 'Correo', label: 'Correo', inputType: 'email' as const },
+		{ type: 'select' as const, name: 'uidRol', placeholder: 'Seleccionar rol', label: 'Rol', options: roleOptions },
+		{ type: 'select' as const, name: 'status', placeholder: 'Seleccionar estado', label: 'Estado', options: statusUserOptions },
+		{ type: 'select' as const, name: 'activatedAccount', placeholder: 'Cuenta activada', label: 'Cuenta activada', options: accountStatusOptions },
 	];
 
 	return (
-		<section className={styles.form}>
-			<Form
-				title="Actualizar Usuario"
-				onSubmit={handleSubmit(onSubmit) as never}
-				register={register}
-				errors={errors}
-				control={control}
-				renderOptions={renderOptions}
-			/>
-		</section>
+		<CrudForm
+			title="Actualizar Usuario"
+			onSubmit={handleSubmit(onSubmit) as never}
+			register={register}
+			errors={errors}
+			control={control}
+			renderOptions={renderOptions}
+		/>
 	);
 };
 
