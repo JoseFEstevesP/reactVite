@@ -1,4 +1,4 @@
-import { useLogout } from '@/api/hooks/useLogout';
+import { useLogout } from '@/hooks/useLogout';
 import Menu from '@/components/menu/Menu';
 import NotificationBell from '@/components/notification/NotificationBell';
 import useValidate from '@/hooks/useValidate';

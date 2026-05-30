@@ -3,7 +3,7 @@ import Login from './components/login/Login';
 import ProtectedRoute from './components/protected-route/ProtectedRoute';
 import Restricted from './components/restricted/Restricted';
 import LDashboard from './layout/dashboard/LDashboard';
-import { Permission } from './page/rol/enum/Permissions';
+import { Permission } from './enums/permissions';
 import AuditPage from './page/audit/AuditPage';
 import Dashboard from './page/dashboard/Dashboard';
 import ProfilePage from './page/profile/ProfilePage';

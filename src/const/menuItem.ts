@@ -1,5 +1,5 @@
 import type { MenuItem } from '@/components/menu/types';
-import { Permission } from '@/page/rol/enum/Permissions';
+import { Permission } from '@/enums/permissions';
 
 export const menuItem: MenuItem[] = [
 	{

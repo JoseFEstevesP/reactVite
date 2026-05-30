@@ -1,4 +1,4 @@
-import { useLogin } from '@/api/hooks/useLogin';
+import { useLogin } from '@/hooks/useLogin';
 import useRenderInputs from '@/hooks/useRenderInputs/useRenderInputs';
 import LForm from '@/layout/form/LForm';
 import { useAuthStore } from '@/stores/authStore';

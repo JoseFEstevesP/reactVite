@@ -1,6 +1,6 @@
 import { FieldErrors, UseFormRegister, Control } from 'react-hook-form';
-import type { NameIcon } from '../../components/icon/types';
-import type { TypeInput } from '../../components/input/types';
+import type { NameIcon } from '@/components/icon/types';
+import type { TypeInput } from '@/components/input/types';
 
 export type CurrencySymbol = '$' | 'BS' | 'Bs.' | '\u20AC';
 

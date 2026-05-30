@@ -4,13 +4,16 @@ import BarChart from '@/components/barChart/BarChart';
 import Loader from '@/components/loader/Loader';
 import PieChart from '@/components/pieChart/PieChart';
 import type { ApiResponse } from '@/globalTypes';
+import { useToast } from '@/hooks/useToast';
 import styles from './styles.module.scss';
 import type { DashboardData } from './types';
 
 const Dashboard = () => {
+	const { error: toastError } = useToast();
 	const { data, isPending, isError, refetch } = useGet<
 		ApiResponse<DashboardData>
 	>(routes.dashboard, {
+		onError: toastError,
 		queryKey: ['dashboard'],
 		refetchOnMount: true,
 	});

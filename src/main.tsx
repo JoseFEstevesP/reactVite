@@ -5,15 +5,17 @@ import App from './App.tsx';
 import { ToastContainer } from './components/toast/ToastContainer';
 import { QueryProvider } from './providers/QueryProvider';
 import { useAuthStore } from './stores/authStore';
+import { useRolStore } from './stores/rolStore';
 import './styles/reset.scss';
 import './styles/style.scss';
 
 const InitializeAuth = ({ children }: { children: React.ReactNode }) => {
 	const { initialize } = useAuthStore();
+	const { setEncryptedRol } = useRolStore();
 
 	useEffect(() => {
-		initialize();
-	}, [initialize]);
+		initialize(rol => setEncryptedRol(rol));
+	}, [initialize, setEncryptedRol]);
 
 	return children;
 };

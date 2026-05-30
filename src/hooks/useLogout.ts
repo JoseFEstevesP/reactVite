@@ -2,8 +2,8 @@ import { useAuthStore } from '@/stores/authStore';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import type { AxiosError } from 'axios';
-import http from '../http';
-import { routes } from '../url';
+import http from '@/api/http';
+import { routes } from '@/api/url';
 import { useToast } from '@/hooks/useToast';
 
 export function useLogout() {

@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import type { LoginDTOTypes } from '@/components/login/dto/LoginDTO';
 import type { ApiResponse, ApiErrorResponse } from '@/globalTypes';
 import { useApiResponse } from '@/hooks/useApiResponse';
-import { routes } from '../url';
-import { usePost } from './usePost';
+import { useApiMutation } from '@/api/hooks/useApiMutation';
+import { routes } from '@/api/url';
 
 export function useLogin() {
 	const { setToken } = useAuthStore();
@@ -15,11 +15,11 @@ export function useLogin() {
 	const navigate = useNavigate();
 	const { handleSuccess, handleError } = useApiResponse();
 
-	const login = usePost<
+	const login = useApiMutation<
 		ApiResponse<{ msg: string; rol: string }>,
 		AxiosError<ApiErrorResponse>,
 		LoginDTOTypes
-	>(routes.login, {
+	>(routes.login, 'post', {
 		queryKey: ['login'],
 		onSuccess: data => {
 			if (handleSuccess(data)) {
@@ -32,6 +32,7 @@ export function useLogin() {
 			handleError(error);
 		},
 	});
+
 	const handleLogin = useCallback(async (data: LoginDTOTypes) => {
 		await login.mutateAsync(data);
 	}, []);

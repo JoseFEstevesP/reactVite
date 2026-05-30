@@ -6,7 +6,7 @@ import type {
 import { Button } from '@/components/button/Button';
 import Loader from '@/components/loader/Loader';
 import useValidate from '@/hooks/useValidate';
-import { Permission } from '@/page/rol/enum/Permissions';
+import { Permission } from '@/enums/permissions';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 
